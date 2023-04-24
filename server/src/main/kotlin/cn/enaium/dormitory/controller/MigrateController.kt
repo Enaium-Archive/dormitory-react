@@ -20,11 +20,42 @@
  * SOFTWARE.
  */
 
-package cn.enaium.dormitory.repository
+package cn.enaium.dormitory.controller
 
 import cn.enaium.dormitory.model.entity.Migrate
-import org.babyfish.jimmer.spring.repository.KRepository
-import org.springframework.stereotype.Repository
+import cn.enaium.dormitory.model.entity.input.MigrateInput
+import cn.enaium.dormitory.model.response.ResponseBody
+import cn.enaium.dormitory.repository.MigrateRepository
+import org.springframework.data.domain.Page
+import org.springframework.web.bind.annotation.*
 
-@Repository
-interface MigrateRepository : KRepository<Migrate,Int>
+/**
+ * 迁出
+ *
+ * @author Enaium
+ */
+@RestController
+@RequestMapping("/migrate")
+class MigrateController(
+    val migrateRepository: MigrateRepository
+) {
+    @GetMapping
+    fun get(
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "1") size: Int
+    ): ResponseBody<Page<Migrate>?> {
+        return ResponseBody.Builder.success(metadata = migrateRepository.findAll(page, size))
+    }
+
+    @PutMapping
+    fun put(@RequestBody migrateInput: MigrateInput): ResponseBody<Nothing?> {
+        migrateRepository.save(migrateInput)
+        return ResponseBody.Builder.success()
+    }
+
+    @DeleteMapping("/{id}")
+    fun delete(@PathVariable id: Int): ResponseBody<Nothing?> {
+        migrateRepository.deleteById(id)
+        return ResponseBody.Builder.success()
+    }
+}

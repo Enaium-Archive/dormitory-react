@@ -20,23 +20,10 @@
  * SOFTWARE.
  */
 
-package cn.enaium.dormitory.model
+package cn.enaium.dormitory.configuration
 
-import org.babyfish.jimmer.sql.*
-import java.time.LocalDateTime
-
-@Entity
-@Table(name = "t_migrate")
-interface Migrate {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long
-
-    val student: Student
-
-    val dormitory: Dormitory
-
-    val reason: String
-
-    val createDate: LocalDateTime
+/**
+ * @author Enaium
+ */
+class SaTokenConfiguration {
 }

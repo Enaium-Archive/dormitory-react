@@ -20,24 +20,39 @@
  * SOFTWARE.
  */
 
-package cn.enaium.dormitory.model
+package cn.enaium.dormitory.model.entity.input
 
-import org.babyfish.jimmer.sql.*
+import cn.enaium.dormitory.model.entity.Student
+import org.babyfish.jimmer.Input
+import org.mapstruct.BeanMapping
+import org.mapstruct.Mapper
+import org.mapstruct.ReportingPolicy
+import org.mapstruct.factory.Mappers
+import java.time.LocalDateTime
 
-@Entity
-@Table(name = "t_dormitory")
-interface Dormitory {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long
+data class StudentInput(
+    val id: Int?,
+    val number: String?,
+    val name: String?,
+    val gender: Int?,
+    val dormitoryId: Int?,
+    val state: String?,
+    val createDate: LocalDateTime?,
+) : Input<Student> {
 
-    val building: Building
+    override fun toEntity(): Student {
+        return CONVERTER.toTStudent(this)
+    }
 
-    val name: String
+    @Mapper
+    interface Converter {
+        @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+        fun toTStudent(input: StudentInput): Student
+    }
 
-    val type: Int
-
-    val available: Int
-
-    val telephone: String
+    companion object {
+        @JvmStatic
+        private val CONVERTER = Mappers.getMapper(Converter::class.java)
+    }
 }
+

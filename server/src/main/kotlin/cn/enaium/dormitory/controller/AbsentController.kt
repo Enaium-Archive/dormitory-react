@@ -20,35 +20,42 @@
  * SOFTWARE.
  */
 
-package cn.enaium.dormitory.model.input
+package cn.enaium.dormitory.controller
 
-import cn.enaium.dormitory.model.Building
-import org.babyfish.jimmer.Input
-import org.mapstruct.BeanMapping
-import org.mapstruct.Mapper
-import org.mapstruct.ReportingPolicy
-import org.mapstruct.factory.Mappers
+import cn.enaium.dormitory.model.entity.Absent
+import cn.enaium.dormitory.model.entity.input.AbsentInput
+import cn.enaium.dormitory.model.response.ResponseBody
+import cn.enaium.dormitory.repository.AbsentRepository
+import org.springframework.data.domain.Page
+import org.springframework.web.bind.annotation.*
 
-data class BuildingInput(
-    val id: Int?,
-    val name: String?,
-    val introduction: String?,
-    val operatorId: Int?,
-) : Input<Building> {
-
-    override fun toEntity(): Building {
-        return CONVERTER.toTBuilding(this)
+/**
+ * 缺勤
+ *
+ * @author Enaium
+ */
+@RestController
+@RequestMapping("/absent")
+class AbsentController(
+    val absentRepository: AbsentRepository
+) {
+    @GetMapping
+    fun get(
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "1") size: Int
+    ): ResponseBody<Page<Absent>?> {
+        return ResponseBody.Builder.success(metadata = absentRepository.findAll(page, size))
     }
 
-    @Mapper
-    interface Converter {
-        @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-        fun toTBuilding(input: BuildingInput): Building
+    @PutMapping
+    fun put(@RequestBody absentInput: AbsentInput): ResponseBody<Nothing?> {
+        absentRepository.save(absentInput)
+        return ResponseBody.Builder.success()
     }
 
-    companion object {
-        @JvmStatic
-        private val CONVERTER = Mappers.getMapper(Converter::class.java)
+    @DeleteMapping("/{id}")
+    fun delete(@PathVariable id: Int): ResponseBody<Nothing?> {
+        absentRepository.deleteById(id)
+        return ResponseBody.Builder.success()
     }
 }
-

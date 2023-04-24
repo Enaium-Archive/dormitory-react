@@ -20,11 +20,16 @@
  * SOFTWARE.
  */
 
-package cn.enaium.dormitory.repository
+package cn.enaium.dormitory.model.entity
 
-import cn.enaium.dormitory.model.entity.Dormitory
-import org.babyfish.jimmer.spring.repository.KRepository
-import org.springframework.stereotype.Repository
+import org.babyfish.jimmer.sql.*
 
-@Repository
-interface DormitoryRepository : KRepository<Dormitory,Int>
+@Entity
+@Table(name = "t_role")
+interface Role {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Int
+
+    val name: String
+}

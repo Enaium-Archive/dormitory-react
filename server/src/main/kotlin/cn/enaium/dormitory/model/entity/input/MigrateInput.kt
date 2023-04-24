@@ -20,32 +20,32 @@
  * SOFTWARE.
  */
 
-package cn.enaium.dormitory.model.input
+package cn.enaium.dormitory.model.entity.input
 
-import cn.enaium.dormitory.model.Dormitory
+import cn.enaium.dormitory.model.entity.Migrate
 import org.babyfish.jimmer.Input
 import org.mapstruct.BeanMapping
 import org.mapstruct.Mapper
 import org.mapstruct.ReportingPolicy
 import org.mapstruct.factory.Mappers
+import java.time.LocalDateTime
 
-data class DormitoryInput(
+data class MigrateInput(
     val id: Int?,
-    val buildingId: Int?,
-    val name: String?,
-    val type: Int?,
-    val available: Int?,
-    val telephone: String?,
-) : Input<Dormitory> {
+    val studentId: Int?,
+    val dormitoryId: Int?,
+    val reason: String?,
+    val createDate: LocalDateTime?,
+) : Input<Migrate> {
 
-    override fun toEntity(): Dormitory {
-        return CONVERTER.toTDormitory(this)
+    override fun toEntity(): Migrate {
+        return CONVERTER.toTMigrate(this)
     }
 
     @Mapper
     interface Converter {
         @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-        fun toTDormitory(input: DormitoryInput): Dormitory
+        fun toTMigrate(input: MigrateInput): Migrate
     }
 
     companion object {

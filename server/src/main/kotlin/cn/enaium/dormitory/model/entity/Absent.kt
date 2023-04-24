@@ -20,38 +20,31 @@
  * SOFTWARE.
  */
 
-package cn.enaium.dormitory.model.input
+package cn.enaium.dormitory.model.entity
 
-import cn.enaium.dormitory.model.Operator
-import org.babyfish.jimmer.Input
-import org.mapstruct.BeanMapping
-import org.mapstruct.Mapper
-import org.mapstruct.ReportingPolicy
-import org.mapstruct.factory.Mappers
+import org.babyfish.jimmer.sql.*
+import java.time.LocalDateTime
 
-data class OperatorInput(
-    val id: Int?,
-    val username: String?,
-    val password: String?,
-    val name: String?,
-    val gender: Int?,
-    val phone: Long?,
-    val role: Int?,
-) : Input<Operator> {
+@Entity
+@Table(name = "t_absent")
+interface Absent {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Int
 
-    override fun toEntity(): Operator {
-        return CONVERTER.toTOperator(this)
-    }
+    @ManyToOne
+    val building: Building
 
-    @Mapper
-    interface Converter {
-        @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-        fun toTOperator(input: OperatorInput): Operator
-    }
+    @ManyToOne
+    val dormitory: Dormitory
 
-    companion object {
-        @JvmStatic
-        private val CONVERTER = Mappers.getMapper(Converter::class.java)
-    }
+    @ManyToOne
+    val student: Student
+
+    @ManyToOne
+    val account: Operator
+
+    val createDate: LocalDateTime
+
+    val reason: String
 }
-

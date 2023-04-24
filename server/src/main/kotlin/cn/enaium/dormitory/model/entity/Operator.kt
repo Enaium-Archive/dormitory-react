@@ -20,37 +20,26 @@
  * SOFTWARE.
  */
 
-package cn.enaium.dormitory.model.input
+package cn.enaium.dormitory.model.entity
 
-import cn.enaium.dormitory.model.Migrate
-import org.babyfish.jimmer.Input
-import org.mapstruct.BeanMapping
-import org.mapstruct.Mapper
-import org.mapstruct.ReportingPolicy
-import org.mapstruct.factory.Mappers
-import java.time.LocalDateTime
+import org.babyfish.jimmer.sql.*
 
-data class MigrateInput(
-    val id: Int?,
-    val studentId: Int?,
-    val dormitoryId: Int?,
-    val reason: String?,
-    val createDate: LocalDateTime?,
-) : Input<Migrate> {
+@Entity
+@Table(name = "t_operator")
+interface Operator {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    val id: Int
 
-    override fun toEntity(): Migrate {
-        return CONVERTER.toTMigrate(this)
-    }
+    val username: String
 
-    @Mapper
-    interface Converter {
-        @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-        fun toTMigrate(input: MigrateInput): Migrate
-    }
+    val password: String
 
-    companion object {
-        @JvmStatic
-        private val CONVERTER = Mappers.getMapper(Converter::class.java)
-    }
+    val name: String
+
+    val gender: Int
+
+    val phone: Long
+
+    val role: Int
 }
-

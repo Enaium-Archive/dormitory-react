@@ -20,11 +20,18 @@
  * SOFTWARE.
  */
 
-package cn.enaium.dormitory.repository
+package cn.enaium.dormitory.configuration
 
-import cn.enaium.dormitory.model.entity.Dormitory
-import org.babyfish.jimmer.spring.repository.KRepository
-import org.springframework.stereotype.Repository
+import cn.enaium.dormitory.model.entity.ENTITY_MANAGER
+import org.babyfish.jimmer.sql.runtime.EntityManager
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
 
-@Repository
-interface DormitoryRepository : KRepository<Dormitory,Int>
+/**
+ * @author Enaium
+ */
+@Configuration
+class JimmerConfiguration {
+    @Bean
+    fun entityManager(): EntityManager = ENTITY_MANAGER
+}

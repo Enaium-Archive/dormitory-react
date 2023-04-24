@@ -20,26 +20,25 @@
  * SOFTWARE.
  */
 
-package cn.enaium.dormitory.model
+package cn.enaium.dormitory.model.entity
 
 import org.babyfish.jimmer.sql.*
+import java.time.LocalDateTime
 
 @Entity
-@Table(name = "t_operator")
-interface Operator {
+@Table(name = "t_migrate")
+interface Migrate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long
+    val id: Int
 
-    val username: String
+    @ManyToOne
+    val student: Student
 
-    val password: String
+    @ManyToOne
+    val dormitory: Dormitory
 
-    val name: String
+    val reason: String
 
-    val gender: Int
-
-    val phone: Long
-
-    val role: Int
+    val createDate: LocalDateTime
 }

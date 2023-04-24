@@ -20,11 +20,42 @@
  * SOFTWARE.
  */
 
-package cn.enaium.dormitory.repository
+package cn.enaium.dormitory.controller
 
 import cn.enaium.dormitory.model.entity.Dormitory
-import org.babyfish.jimmer.spring.repository.KRepository
-import org.springframework.stereotype.Repository
+import cn.enaium.dormitory.model.entity.input.DormitoryInput
+import cn.enaium.dormitory.model.response.ResponseBody
+import cn.enaium.dormitory.repository.DormitoryRepository
+import org.springframework.data.domain.Page
+import org.springframework.web.bind.annotation.*
 
-@Repository
-interface DormitoryRepository : KRepository<Dormitory,Int>
+/**
+ * 宿舍
+ *
+ * @author Enaium
+ */
+@RestController
+@RequestMapping("/dormitory")
+class DormitoryController(
+    val dormitoryRepository: DormitoryRepository
+) {
+    @GetMapping
+    fun get(
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "1") size: Int
+    ): ResponseBody<Page<Dormitory>?> {
+        return ResponseBody.Builder.success(metadata = dormitoryRepository.findAll(page, size))
+    }
+
+    @PutMapping
+    fun put(@RequestBody dormitoryInput: DormitoryInput): ResponseBody<Nothing?> {
+        dormitoryRepository.save(dormitoryInput)
+        return ResponseBody.Builder.success()
+    }
+
+    @DeleteMapping("/{id}")
+    fun delete(@PathVariable id: Int): ResponseBody<Nothing?> {
+        dormitoryRepository.deleteById(id)
+        return ResponseBody.Builder.success()
+    }
+}

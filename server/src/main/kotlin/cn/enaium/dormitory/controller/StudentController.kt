@@ -20,11 +20,42 @@
  * SOFTWARE.
  */
 
-package cn.enaium.dormitory.repository
+package cn.enaium.dormitory.controller
 
 import cn.enaium.dormitory.model.entity.Student
-import org.babyfish.jimmer.spring.repository.KRepository
-import org.springframework.stereotype.Repository
+import cn.enaium.dormitory.model.entity.input.StudentInput
+import cn.enaium.dormitory.model.response.ResponseBody
+import cn.enaium.dormitory.repository.StudentRepository
+import org.springframework.data.domain.Page
+import org.springframework.web.bind.annotation.*
 
-@Repository
-interface StudentRepository : KRepository<Student,Int>
+/**
+ * 学生
+ *
+ * @author Enaium
+ */
+@RestController
+@RequestMapping("/student")
+class StudentController(
+    val studentRepository: StudentRepository
+) {
+    @GetMapping
+    fun get(
+        @RequestParam(defaultValue = "0") page: Int,
+        @RequestParam(defaultValue = "1") size: Int
+    ): ResponseBody<Page<Student>?> {
+        return ResponseBody.Builder.success(metadata = studentRepository.findAll(page, size))
+    }
+
+    @PutMapping
+    fun put(@RequestBody studentInput: StudentInput): ResponseBody<Nothing?> {
+        studentRepository.save(studentInput)
+        return ResponseBody.Builder.success()
+    }
+
+    @DeleteMapping("/{id}")
+    fun delete(@PathVariable id: Int): ResponseBody<Nothing?> {
+        studentRepository.deleteById(id)
+        return ResponseBody.Builder.success()
+    }
+}

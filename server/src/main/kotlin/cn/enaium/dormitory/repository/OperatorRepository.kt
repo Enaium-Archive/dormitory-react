@@ -22,8 +22,20 @@
 
 package cn.enaium.dormitory.repository
 
+import cn.enaium.dormitory.model.entity.Operator
+import cn.enaium.dormitory.model.entity.by
 import org.babyfish.jimmer.spring.repository.KRepository
+import org.babyfish.jimmer.sql.kt.fetcher.newFetcher
 import org.springframework.stereotype.Repository
 
 @Repository
-interface OperatorRepository : KRepository<cn.enaium.dormitory.model.Operator, Long>
+interface OperatorRepository : KRepository<Operator, Int> {
+    fun findByUsername(username: String): Operator?
+
+    companion object {
+        val DEFAULT_FETCHER = newFetcher(Operator::class).by {
+            allScalarFields()
+            password(false)
+        }
+    }
+}

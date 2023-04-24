@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package cn.enaium.dormitory.model
+package cn.enaium.dormitory.model.entity
 
 import org.babyfish.jimmer.sql.*
 
@@ -29,11 +29,12 @@ import org.babyfish.jimmer.sql.*
 interface Building {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long
+    val id: Int
 
     val name: String
 
     val introduction: String
 
+    @ManyToOne
     val operator: Operator
 }

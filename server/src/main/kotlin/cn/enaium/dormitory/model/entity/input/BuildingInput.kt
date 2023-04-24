@@ -20,28 +20,30 @@
  * SOFTWARE.
  */
 
-package cn.enaium.dormitory.model.input
+package cn.enaium.dormitory.model.entity.input
 
-import cn.enaium.dormitory.model.Role
+import cn.enaium.dormitory.model.entity.Building
 import org.babyfish.jimmer.Input
 import org.mapstruct.BeanMapping
 import org.mapstruct.Mapper
 import org.mapstruct.ReportingPolicy
 import org.mapstruct.factory.Mappers
 
-data class RoleInput(
+data class BuildingInput(
     val id: Int?,
     val name: String?,
-) : Input<Role> {
+    val introduction: String?,
+    val operatorId: Int?,
+) : Input<Building> {
 
-    override fun toEntity(): Role {
-        return CONVERTER.toTRole(this)
+    override fun toEntity(): Building {
+        return CONVERTER.toTBuilding(this)
     }
 
     @Mapper
     interface Converter {
         @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-        fun toTRole(input: RoleInput): Role
+        fun toTBuilding(input: BuildingInput): Building
     }
 
     companion object {

@@ -20,27 +20,39 @@
  * SOFTWARE.
  */
 
-package cn.enaium.dormitory.model
+package cn.enaium.dormitory.model.entity.input
 
-import org.babyfish.jimmer.sql.*
+import cn.enaium.dormitory.model.entity.Absent
+import org.babyfish.jimmer.Input
+import org.mapstruct.BeanMapping
+import org.mapstruct.Mapper
+import org.mapstruct.ReportingPolicy
+import org.mapstruct.factory.Mappers
 import java.time.LocalDateTime
 
-@Entity
-@Table(name = "t_student")
-interface Student {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long
+data class AbsentInput(
+    val id: Int?,
+    val buildingId: Int?,
+    val dormitoryId: Int?,
+    val studentId: Int?,
+    val accountId: Int?,
+    val createDate: LocalDateTime?,
+    val reason: String?,
+) : Input<Absent> {
 
-    val number: String
+    override fun toEntity(): Absent {
+        return CONVERTER.toTAbsent(this)
+    }
 
-    val name: String
+    @Mapper
+    interface Converter {
+        @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+        fun toTAbsent(input: AbsentInput): Absent
+    }
 
-    val gender: Int
-
-    val dormitory: Dormitory?
-
-    val state: String
-
-    val createDate: LocalDateTime
+    companion object {
+        @JvmStatic
+        private val CONVERTER = Mappers.getMapper(Converter::class.java)
+    }
 }
+

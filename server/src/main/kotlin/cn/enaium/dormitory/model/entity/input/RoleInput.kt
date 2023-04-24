@@ -20,34 +20,28 @@
  * SOFTWARE.
  */
 
-package cn.enaium.dormitory.model.input
+package cn.enaium.dormitory.model.entity.input
 
-import cn.enaium.dormitory.model.Absent
+import cn.enaium.dormitory.model.entity.Role
 import org.babyfish.jimmer.Input
 import org.mapstruct.BeanMapping
 import org.mapstruct.Mapper
 import org.mapstruct.ReportingPolicy
 import org.mapstruct.factory.Mappers
-import java.time.LocalDateTime
 
-data class AbsentInput(
+data class RoleInput(
     val id: Int?,
-    val buildingId: Int?,
-    val dormitoryId: Int?,
-    val studentId: Int?,
-    val accountId: Int?,
-    val createDate: LocalDateTime?,
-    val reason: String?,
-) : Input<Absent> {
+    val name: String?,
+) : Input<Role> {
 
-    override fun toEntity(): Absent {
-        return CONVERTER.toTAbsent(this)
+    override fun toEntity(): Role {
+        return CONVERTER.toTRole(this)
     }
 
     @Mapper
     interface Converter {
         @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-        fun toTAbsent(input: AbsentInput): Absent
+        fun toTRole(input: RoleInput): Role
     }
 
     companion object {

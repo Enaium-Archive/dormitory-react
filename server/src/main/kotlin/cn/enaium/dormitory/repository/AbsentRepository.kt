@@ -22,8 +22,9 @@
 
 package cn.enaium.dormitory.repository
 
+import cn.enaium.dormitory.model.entity.Absent
 import org.babyfish.jimmer.spring.repository.KRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface AbsentRepository : KRepository<cn.enaium.dormitory.model.Absent, Long>
+interface AbsentRepository : KRepository<Absent,Int>

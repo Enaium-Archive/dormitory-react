@@ -20,11 +20,10 @@
  * SOFTWARE.
  */
 
-package cn.enaium.dormitory.repository
+package cn.enaium.dormitory.configuration
 
-import cn.enaium.dormitory.model.entity.Dormitory
-import org.babyfish.jimmer.spring.repository.KRepository
-import org.springframework.stereotype.Repository
-
-@Repository
-interface DormitoryRepository : KRepository<Dormitory,Int>
+/**
+ * @author Enaium
+ */
+class SpringDocConfiguration {
+}

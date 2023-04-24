@@ -22,8 +22,9 @@
 
 package cn.enaium.dormitory.repository
 
+import cn.enaium.dormitory.model.entity.Role
 import org.babyfish.jimmer.spring.repository.KRepository
 import org.springframework.stereotype.Repository
 
 @Repository
-interface RoleRepository : KRepository<cn.enaium.dormitory.model.Role, Long>
+interface RoleRepository : KRepository<Role,Int>
