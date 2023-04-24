@@ -32,16 +32,15 @@ interface Absent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long
 
-    val building: cn.enaium.dormitory.model.Building?
+    val building: Building
 
-    val dormitory: cn.enaium.dormitory.model.Dormitory?
+    val dormitory: Dormitory
 
-    val student: cn.enaium.dormitory.model.Student?
+    val student: Student
 
-    val account: cn.enaium.dormitory.model.Operator?
+    val account: Operator
 
     val createDate: LocalDateTime
 
     val reason: String
-
 }

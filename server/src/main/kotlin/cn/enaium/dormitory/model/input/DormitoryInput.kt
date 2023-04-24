@@ -22,6 +22,7 @@
 
 package cn.enaium.dormitory.model.input
 
+import cn.enaium.dormitory.model.Dormitory
 import org.babyfish.jimmer.Input
 import org.mapstruct.BeanMapping
 import org.mapstruct.Mapper
@@ -35,16 +36,16 @@ data class DormitoryInput(
     val type: Int?,
     val available: Int?,
     val telephone: String?,
-) : Input<cn.enaium.dormitory.model.Dormitory> {
+) : Input<Dormitory> {
 
-    override fun toEntity(): cn.enaium.dormitory.model.Dormitory {
+    override fun toEntity(): Dormitory {
         return CONVERTER.toTDormitory(this)
     }
 
     @Mapper
     interface Converter {
         @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-        fun toTDormitory(input: DormitoryInput): cn.enaium.dormitory.model.Dormitory
+        fun toTDormitory(input: DormitoryInput): Dormitory
     }
 
     companion object {

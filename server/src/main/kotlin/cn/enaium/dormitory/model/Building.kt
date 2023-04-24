@@ -35,6 +35,5 @@ interface Building {
 
     val introduction: String
 
-    val operator: cn.enaium.dormitory.model.Operator?
-
+    val operator: Operator
 }

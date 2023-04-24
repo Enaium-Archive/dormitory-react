@@ -31,7 +31,7 @@ interface Dormitory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long
 
-    val building: cn.enaium.dormitory.model.Building?
+    val building: Building
 
     val name: String
 
@@ -40,5 +40,4 @@ interface Dormitory {
     val available: Int
 
     val telephone: String
-
 }

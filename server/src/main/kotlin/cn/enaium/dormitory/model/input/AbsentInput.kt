@@ -22,6 +22,7 @@
 
 package cn.enaium.dormitory.model.input
 
+import cn.enaium.dormitory.model.Absent
 import org.babyfish.jimmer.Input
 import org.mapstruct.BeanMapping
 import org.mapstruct.Mapper
@@ -37,16 +38,16 @@ data class AbsentInput(
     val accountId: Int?,
     val createDate: LocalDateTime?,
     val reason: String?,
-) : Input<cn.enaium.dormitory.model.Absent> {
+) : Input<Absent> {
 
-    override fun toEntity(): cn.enaium.dormitory.model.Absent {
+    override fun toEntity(): Absent {
         return CONVERTER.toTAbsent(this)
     }
 
     @Mapper
     interface Converter {
         @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-        fun toTAbsent(input: AbsentInput): cn.enaium.dormitory.model.Absent
+        fun toTAbsent(input: AbsentInput): Absent
     }
 
     companion object {

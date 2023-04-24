@@ -38,10 +38,9 @@ interface Student {
 
     val gender: Int
 
-    val dormitory: cn.enaium.dormitory.model.Dormitory?
+    val dormitory: Dormitory?
 
     val state: String
 
     val createDate: LocalDateTime
-
 }

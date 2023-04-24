@@ -32,12 +32,11 @@ interface Migrate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long
 
-    val student: cn.enaium.dormitory.model.Student?
+    val student: Student
 
-    val dormitory: cn.enaium.dormitory.model.Dormitory?
+    val dormitory: Dormitory
 
     val reason: String
 
     val createDate: LocalDateTime
-
 }

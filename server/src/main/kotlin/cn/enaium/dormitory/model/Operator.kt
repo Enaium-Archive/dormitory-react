@@ -42,5 +42,4 @@ interface Operator {
     val phone: Long
 
     val role: Int
-
 }

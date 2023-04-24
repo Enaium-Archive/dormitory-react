@@ -22,6 +22,7 @@
 
 package cn.enaium.dormitory.model.input
 
+import cn.enaium.dormitory.model.Building
 import org.babyfish.jimmer.Input
 import org.mapstruct.BeanMapping
 import org.mapstruct.Mapper
@@ -33,16 +34,16 @@ data class BuildingInput(
     val name: String?,
     val introduction: String?,
     val operatorId: Int?,
-) : Input<cn.enaium.dormitory.model.Building> {
+) : Input<Building> {
 
-    override fun toEntity(): cn.enaium.dormitory.model.Building {
+    override fun toEntity(): Building {
         return CONVERTER.toTBuilding(this)
     }
 
     @Mapper
     interface Converter {
         @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-        fun toTBuilding(input: BuildingInput): cn.enaium.dormitory.model.Building
+        fun toTBuilding(input: BuildingInput): Building
     }
 
     companion object {
