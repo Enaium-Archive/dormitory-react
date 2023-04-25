@@ -42,7 +42,7 @@ interface Absent {
     val student: Student
 
     @ManyToOne
-    val account: Operator
+    val operator: Operator
 
     val createDate: LocalDateTime
 

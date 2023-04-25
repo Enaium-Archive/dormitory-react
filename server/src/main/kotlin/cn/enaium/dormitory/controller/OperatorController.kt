@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.*
  * @author Enaium
  */
 @RestController
-@RequestMapping("/operator")
+@RequestMapping("/operator/")
 class OperatorController(
     val operatorRepository: OperatorRepository
 ) {
@@ -63,7 +63,7 @@ class OperatorController(
      * @param id 操作员唯一身份
      * @return 操作员
      */
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     fun get(@PathVariable id: Int): ResponseBody<Operator?> {
         operatorRepository.findNullable(id, DEFAULT_FETCHER)?.let {
             return ResponseBody.Builder.success(metadata = it)
@@ -77,7 +77,7 @@ class OperatorController(
      * @param id 操作员
      * @return 删除成功
      */
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     fun delete(@PathVariable id: Int): ResponseBody<Nothing?> {
         operatorRepository.deleteById(id)
         return ResponseBody.Builder.success()

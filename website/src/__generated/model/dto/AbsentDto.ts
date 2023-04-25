@@ -4,7 +4,7 @@ export type AbsentDto = {
         readonly building: {readonly id: number}, 
         readonly dormitory: {readonly id: number}, 
         readonly student: {readonly id: number}, 
-        readonly account: {readonly id: number}, 
+        readonly operator: {readonly id: number}, 
         readonly createDate: string, 
         readonly reason: string
     }

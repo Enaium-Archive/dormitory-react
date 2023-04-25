@@ -1,7 +1,5 @@
 export interface AbsentInput {
     
-    readonly accountId?: number;
-    
     readonly buildingId?: number;
     
     readonly createDate?: string;
@@ -9,6 +7,8 @@ export interface AbsentInput {
     readonly dormitoryId?: number;
     
     readonly id?: number;
+    
+    readonly operatorId?: number;
     
     readonly reason?: string;
     

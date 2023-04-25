@@ -9,7 +9,7 @@ export class AbsentController {
     async delete(options: AbsentControllerOptions['delete']): Promise<
         ResponseBody<Void | undefined>
     > {
-        let _uri = '/absent';
+        let _uri = '/absent/';
         _uri += encodeURIComponent(options.id);
         return (await this.executor({uri: _uri, method: 'DELETE'})) as ResponseBody<Void | undefined>
     }
@@ -17,7 +17,7 @@ export class AbsentController {
     async get(options: AbsentControllerOptions['get']): Promise<
         ResponseBody<Page<AbsentDto['DEFAULT']> | undefined>
     > {
-        let _uri = '/absent';
+        let _uri = '/absent/';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
         let _value: any = undefined;
         _value = options.page;

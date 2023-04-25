@@ -9,7 +9,7 @@ export class BuildingController {
     async delete(options: BuildingControllerOptions['delete']): Promise<
         ResponseBody<Void | undefined>
     > {
-        let _uri = '/building';
+        let _uri = '/building/';
         _uri += encodeURIComponent(options.id);
         return (await this.executor({uri: _uri, method: 'DELETE'})) as ResponseBody<Void | undefined>
     }
@@ -17,7 +17,7 @@ export class BuildingController {
     async get(options: BuildingControllerOptions['get']): Promise<
         ResponseBody<Page<BuildingDto['DEFAULT']> | undefined>
     > {
-        let _uri = '/building';
+        let _uri = '/building/';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
         let _value: any = undefined;
         _value = options.page;

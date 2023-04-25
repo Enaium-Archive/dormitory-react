@@ -37,4 +37,7 @@ interface Building {
 
     @ManyToOne
     val operator: Operator
+
+    @OneToMany(mappedBy = "building")
+    val absents: List<Absent>
 }

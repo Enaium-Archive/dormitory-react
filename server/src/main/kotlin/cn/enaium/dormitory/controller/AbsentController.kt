@@ -26,8 +26,10 @@ import cn.enaium.dormitory.model.entity.Absent
 import cn.enaium.dormitory.model.entity.input.AbsentInput
 import cn.enaium.dormitory.model.response.ResponseBody
 import cn.enaium.dormitory.repository.AbsentRepository
+import cn.enaium.dormitory.repository.AbsentRepository.Companion.DEFAULT_FETCHER
 import org.springframework.data.domain.Page
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDateTime
 
 /**
  * 缺勤
@@ -35,7 +37,7 @@ import org.springframework.web.bind.annotation.*
  * @author Enaium
  */
 @RestController
-@RequestMapping("/absent")
+@RequestMapping("/absent/")
 class AbsentController(
     val absentRepository: AbsentRepository
 ) {
@@ -44,16 +46,19 @@ class AbsentController(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "1") size: Int
     ): ResponseBody<Page<Absent>?> {
-        return ResponseBody.Builder.success(metadata = absentRepository.findAll(page, size))
+        return ResponseBody.Builder.success(
+            metadata = absentRepository.findAll(page, size, DEFAULT_FETCHER)
+        )
     }
 
     @PutMapping
     fun put(@RequestBody absentInput: AbsentInput): ResponseBody<Nothing?> {
+        absentInput.createDate = LocalDateTime.now()
         absentRepository.save(absentInput)
         return ResponseBody.Builder.success()
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     fun delete(@PathVariable id: Int): ResponseBody<Nothing?> {
         absentRepository.deleteById(id)
         return ResponseBody.Builder.success()

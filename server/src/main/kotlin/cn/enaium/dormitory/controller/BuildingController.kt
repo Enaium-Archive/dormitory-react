@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.*
  * @author Enaium
  */
 @RestController
-@RequestMapping("/building")
+@RequestMapping("/building/")
 class BuildingController(
     val buildingRepository: BuildingRepository
 ) {
@@ -53,7 +53,7 @@ class BuildingController(
         return ResponseBody.Builder.success()
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     fun delete(@PathVariable id: Int): ResponseBody<Nothing?> {
         buildingRepository.deleteById(id)
         return ResponseBody.Builder.success()

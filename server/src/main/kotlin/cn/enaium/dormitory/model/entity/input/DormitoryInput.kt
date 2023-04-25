@@ -34,7 +34,6 @@ data class DormitoryInput(
     val buildingId: Int?,
     val name: String?,
     val type: Int?,
-    val available: Int?,
     val telephone: String?,
 ) : Input<Dormitory> {
 

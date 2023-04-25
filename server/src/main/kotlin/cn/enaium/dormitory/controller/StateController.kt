@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.*
  * @author Enaium
  */
 @RestController
-@RequestMapping("/state")
+@RequestMapping("/state/")
 class StateController(
     val operatorRepository: OperatorRepository
 ) {

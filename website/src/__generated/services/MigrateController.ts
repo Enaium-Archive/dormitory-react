@@ -9,7 +9,7 @@ export class MigrateController {
     async delete(options: MigrateControllerOptions['delete']): Promise<
         ResponseBody<Void | undefined>
     > {
-        let _uri = '/migrate';
+        let _uri = '/migrate/';
         _uri += encodeURIComponent(options.id);
         return (await this.executor({uri: _uri, method: 'DELETE'})) as ResponseBody<Void | undefined>
     }
@@ -17,7 +17,7 @@ export class MigrateController {
     async get(options: MigrateControllerOptions['get']): Promise<
         ResponseBody<Page<MigrateDto['DEFAULT']> | undefined>
     > {
-        let _uri = '/migrate';
+        let _uri = '/migrate/';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
         let _value: any = undefined;
         _value = options.page;

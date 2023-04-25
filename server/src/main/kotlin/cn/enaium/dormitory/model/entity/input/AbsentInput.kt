@@ -35,8 +35,8 @@ data class AbsentInput(
     val buildingId: Int?,
     val dormitoryId: Int?,
     val studentId: Int?,
-    val accountId: Int?,
-    val createDate: LocalDateTime?,
+    val operatorId: Int?,
+    var createDate: LocalDateTime?,
     val reason: String?,
 ) : Input<Absent> {
 

@@ -8,14 +8,14 @@ export class StateController {
     async delete(): Promise<
         ResponseBody<Void | undefined>
     > {
-        let _uri = '/state';
+        let _uri = '/state/';
         return (await this.executor({uri: _uri, method: 'DELETE'})) as ResponseBody<Void | undefined>
     }
     
     async put(options: StateControllerOptions['put']): Promise<
         ResponseBody<PutStateBody | undefined>
     > {
-        let _uri = '/state';
+        let _uri = '/state/';
         return (await this.executor({uri: _uri, method: 'PUT', body: options.body})) as ResponseBody<PutStateBody | undefined>
     }
 }

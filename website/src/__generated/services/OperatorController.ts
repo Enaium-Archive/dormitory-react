@@ -9,7 +9,7 @@ export class OperatorController {
     async delete(options: OperatorControllerOptions['delete']): Promise<
         ResponseBody<Void | undefined>
     > {
-        let _uri = '/operator';
+        let _uri = '/operator/';
         _uri += encodeURIComponent(options.id);
         return (await this.executor({uri: _uri, method: 'DELETE'})) as ResponseBody<Void | undefined>
     }
@@ -17,7 +17,7 @@ export class OperatorController {
     async get(options: OperatorControllerOptions['get']): Promise<
         ResponseBody<OperatorDto['DEFAULT'] | undefined>
     > {
-        let _uri = '/operator';
+        let _uri = '/operator/';
         _uri += encodeURIComponent(options.id);
         return (await this.executor({uri: _uri, method: 'GET'})) as ResponseBody<OperatorDto['DEFAULT'] | undefined>
     }

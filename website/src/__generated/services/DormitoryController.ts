@@ -9,7 +9,7 @@ export class DormitoryController {
     async delete(options: DormitoryControllerOptions['delete']): Promise<
         ResponseBody<Void | undefined>
     > {
-        let _uri = '/dormitory';
+        let _uri = '/dormitory/';
         _uri += encodeURIComponent(options.id);
         return (await this.executor({uri: _uri, method: 'DELETE'})) as ResponseBody<Void | undefined>
     }
@@ -17,7 +17,7 @@ export class DormitoryController {
     async get(options: DormitoryControllerOptions['get']): Promise<
         ResponseBody<Page<DormitoryDto['DEFAULT']> | undefined>
     > {
-        let _uri = '/dormitory';
+        let _uri = '/dormitory/';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
         let _value: any = undefined;
         _value = options.page;

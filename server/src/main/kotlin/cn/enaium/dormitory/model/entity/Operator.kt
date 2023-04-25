@@ -42,4 +42,7 @@ interface Operator {
     val phone: Long
 
     val role: Int
+
+    @OneToMany(mappedBy = "operator")
+    val absents: List<Absent>
 }

@@ -9,7 +9,7 @@ export class StudentController {
     async delete(options: StudentControllerOptions['delete']): Promise<
         ResponseBody<Void | undefined>
     > {
-        let _uri = '/student';
+        let _uri = '/student/';
         _uri += encodeURIComponent(options.id);
         return (await this.executor({uri: _uri, method: 'DELETE'})) as ResponseBody<Void | undefined>
     }
@@ -17,7 +17,7 @@ export class StudentController {
     async get(options: StudentControllerOptions['get']): Promise<
         ResponseBody<Page<StudentDto['DEFAULT']> | undefined>
     > {
-        let _uri = '/student';
+        let _uri = '/student/';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
         let _value: any = undefined;
         _value = options.page;

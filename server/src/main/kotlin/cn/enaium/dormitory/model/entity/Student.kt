@@ -44,4 +44,7 @@ interface Student {
     val state: String
 
     val createDate: LocalDateTime
+
+    @OneToMany(mappedBy = "student")
+    val absents: List<Absent>
 }

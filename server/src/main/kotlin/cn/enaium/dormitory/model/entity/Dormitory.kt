@@ -38,7 +38,8 @@ interface Dormitory {
 
     val type: Int
 
-    val available: Int
-
     val telephone: String
+
+    @OneToMany(mappedBy = "dormitory")
+    val absents: List<Absent>
 }

@@ -35,7 +35,7 @@ import org.springframework.web.bind.annotation.*
  * @author Enaium
  */
 @RestController
-@RequestMapping("/migrate")
+@RequestMapping("/migrate/")
 class MigrateController(
     val migrateRepository: MigrateRepository
 ) {
@@ -53,7 +53,7 @@ class MigrateController(
         return ResponseBody.Builder.success()
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("{id}")
     fun delete(@PathVariable id: Int): ResponseBody<Nothing?> {
         migrateRepository.deleteById(id)
         return ResponseBody.Builder.success()
