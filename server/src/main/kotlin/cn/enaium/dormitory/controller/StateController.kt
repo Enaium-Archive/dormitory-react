@@ -24,6 +24,7 @@ package cn.enaium.dormitory.controller
 
 import cn.dev33.satoken.stp.StpUtil
 import cn.enaium.dormitory.model.entity.input.OperatorInput
+import cn.enaium.dormitory.model.response.PutStateBody
 import cn.enaium.dormitory.model.response.ResponseBody
 import cn.enaium.dormitory.repository.OperatorRepository
 import org.springframework.web.bind.annotation.*
@@ -46,19 +47,14 @@ class StateController(
      * @return 是否成功，成功就返回操作员ID和Token
      */
     @PutMapping
-    fun put(@RequestBody operatorInput: OperatorInput): ResponseBody<Any?> {
+    fun put(@RequestBody operatorInput: OperatorInput): ResponseBody<PutStateBody?> {
         if (operatorInput.username.isNullOrBlank()) {
             return ResponseBody.Builder.fail(status = ResponseBody.Status.USERNAME_EMPTY)
         }
 
         operatorRepository.findByUsername(operatorInput.username)?.let {
             if (it.password == operatorInput.password) {
-                return ResponseBody.Builder.success(
-                    metadata = mapOf(
-                        "id" to it.id,
-                        "token" to StpUtil.createLoginSession(it)
-                    )
-                )
+                return ResponseBody.Builder.success(metadata = PutStateBody(it.id, StpUtil.createLoginSession(it.id)))
             } else {
                 return ResponseBody.Builder.fail(status = ResponseBody.Status.PASSWORD_INCORRECT)
             }
