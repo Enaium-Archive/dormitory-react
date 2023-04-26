@@ -44,6 +44,13 @@ import java.time.LocalDateTime
 class AbsentController(
     val absentRepository: AbsentRepository
 ) {
+    /**
+     * 分页获取所有缺勤
+     *
+     * @param page 第几页
+     * @param size 一页有几个
+     * @return 分页的缺勤
+     */
     @GetMapping
     fun get(
         @RequestParam(defaultValue = "0") page: Int,
@@ -62,6 +69,12 @@ class AbsentController(
         return ResponseBody.Builder.success()
     }
 
+    /**
+     * 根据ID删除缺勤
+     *
+     * @param id 缺勤
+     * @return 删除成功
+     */
     @DeleteMapping("{id}")
     fun delete(@PathVariable id: Int): ResponseBody<Nothing?> {
         absentRepository.deleteById(id)
