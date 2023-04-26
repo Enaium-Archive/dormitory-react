@@ -23,7 +23,7 @@ export class OperatorController {
     }
     
     async get_2(options: OperatorControllerOptions['get_2']): Promise<
-        ResponseBody<Page<OperatorDto['DEFAULT']> | undefined>
+        ResponseBody<Page<OperatorDto['OperatorController/DEFAULT_FETCHER']> | undefined>
     > {
         let _uri = '/operator/';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
@@ -42,7 +42,7 @@ export class OperatorController {
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }
-        return (await this.executor({uri: _uri, method: 'GET'})) as ResponseBody<Page<OperatorDto['DEFAULT']> | undefined>
+        return (await this.executor({uri: _uri, method: 'GET'})) as ResponseBody<Page<OperatorDto['OperatorController/DEFAULT_FETCHER']> | undefined>
     }
 }
 

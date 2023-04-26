@@ -27,13 +27,6 @@ export class BuildingController {
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }
-        _value = options.buildingInput.introduction;
-        if (_value !== undefined && _value !== null) {
-            _uri += _separator
-            _uri += 'introduction='
-            _uri += encodeURIComponent(_value);
-            _separator = '&';
-        }
         _value = options.buildingInput.name;
         if (_value !== undefined && _value !== null) {
             _uri += _separator

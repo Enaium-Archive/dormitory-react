@@ -40,6 +40,13 @@ import org.springframework.web.bind.annotation.*
 class StudentController(
     val studentRepository: StudentRepository
 ) {
+    /**
+     * 分页获取所有学生
+     *
+     * @param page 第几页
+     * @param size 一页有几个
+     * @return 分页的学生
+     */
     @GetMapping
     fun get(
         @RequestParam(defaultValue = "0") page: Int = 0,
@@ -60,6 +67,12 @@ class StudentController(
         return ResponseBody.Builder.success()
     }
 
+    /**
+     * 根据ID删除学生
+     *
+     * @param id 学生
+     * @return 删除成功
+     */
     @DeleteMapping("{id}")
     fun delete(@PathVariable id: Int): ResponseBody<Nothing?> {
         studentRepository.deleteById(id)

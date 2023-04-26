@@ -27,7 +27,7 @@ const AbsentRegister = () => {
   return (
     <>
       <Card title="缺勤登记">
-        <AbsentForm absent={{}} />
+        <AbsentForm labelCol={{ span: 1 }} />
       </Card>
     </>
   )

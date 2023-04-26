@@ -22,11 +22,14 @@
 
 package cn.enaium.dormitory.controller
 
+import cn.dev33.satoken.stp.StpUtil
 import cn.enaium.dormitory.model.entity.Absent
+import cn.enaium.dormitory.model.entity.by
 import cn.enaium.dormitory.model.entity.input.AbsentInput
 import cn.enaium.dormitory.model.response.ResponseBody
 import cn.enaium.dormitory.repository.AbsentRepository
-import cn.enaium.dormitory.repository.AbsentRepository.Companion.DEFAULT_FETCHER
+import org.babyfish.jimmer.client.FetchBy
+import org.babyfish.jimmer.sql.kt.fetcher.newFetcher
 import org.springframework.data.domain.Page
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDateTime
@@ -45,7 +48,7 @@ class AbsentController(
     fun get(
         @RequestParam(defaultValue = "0") page: Int,
         @RequestParam(defaultValue = "1") size: Int,
-    ): ResponseBody<Page<Absent>?> {
+    ): ResponseBody<Page<@FetchBy("DEFAULT_FETCHER") Absent>?> {
         return ResponseBody.Builder.success(
             metadata = absentRepository.findAll(page, size, DEFAULT_FETCHER)
         )
@@ -53,6 +56,7 @@ class AbsentController(
 
     @PutMapping
     fun put(@RequestBody absentInput: AbsentInput): ResponseBody<Nothing?> {
+        absentInput.operatorId = StpUtil.getLoginIdAsInt()
         absentInput.createDate = LocalDateTime.now()
         absentRepository.save(absentInput)
         return ResponseBody.Builder.success()
@@ -62,5 +66,23 @@ class AbsentController(
     fun delete(@PathVariable id: Int): ResponseBody<Nothing?> {
         absentRepository.deleteById(id)
         return ResponseBody.Builder.success()
+    }
+
+    companion object {
+        val DEFAULT_FETCHER = newFetcher(Absent::class).by {
+            allScalarFields()
+            building {
+                allScalarFields()
+            }
+            dormitory {
+                allScalarFields()
+            }
+            student {
+                allScalarFields()
+            }
+            operator {
+                allScalarFields()
+            }
+        }
     }
 }

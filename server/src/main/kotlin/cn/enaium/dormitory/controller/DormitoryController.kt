@@ -40,6 +40,14 @@ import org.springframework.web.bind.annotation.*
 class DormitoryController(
     val dormitoryRepository: DormitoryRepository
 ) {
+
+    /**
+     * 分页获取所有宿舍
+     *
+     * @param page 第几页
+     * @param size 一页有几个
+     * @return 分页的宿舍
+     */
     @GetMapping
     fun get(
         @RequestParam(defaultValue = "0") page: Int = 0,
@@ -59,10 +67,17 @@ class DormitoryController(
 
     @PutMapping
     fun put(@RequestBody dormitoryInput: DormitoryInput): ResponseBody<Nothing?> {
+
         dormitoryRepository.save(dormitoryInput)
         return ResponseBody.Builder.success()
     }
 
+    /**
+     * 根据ID删除宿舍
+     *
+     * @param id 宿舍
+     * @return 删除成功
+     */
     @DeleteMapping("{id}")
     fun delete(@PathVariable id: Int): ResponseBody<Nothing?> {
         dormitoryRepository.deleteById(id)

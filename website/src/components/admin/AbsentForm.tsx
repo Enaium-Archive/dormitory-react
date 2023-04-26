@@ -20,12 +20,12 @@
  * SOFTWARE.
  */
 
-import { Button, Form, Input } from "antd"
-import { AbsentInput } from "@/__generated/model/static"
-import React, { useState } from "react"
+import { Button, Form, Input, message } from "antd"
+import React, { memo } from "react"
 import DebounceSelect from "@/components/DebounceSelect.tsx"
 import { api } from "@/common/ApiInstance.ts"
-import { BuildingDto, DormitoryDto, StudentDto } from "@/__generated/model/dto"
+import { AbsentDto, BuildingDto, DormitoryDto, StudentDto } from "@/__generated/model/dto"
+import { ColProps } from "antd/es/grid/col"
 
 const fetchBuilding = async (name: string): Promise<ReadonlyArray<BuildingDto["DEFAULT"]>> => {
   return (await api.buildingController.get({ buildingInput: { name: name } })).metadata?.content ?? []
@@ -39,53 +39,54 @@ const fetchStudent = async (name: string): Promise<ReadonlyArray<StudentDto["DEF
   return (await api.studentController.get({ studentInput: { name: name } })).metadata?.content ?? []
 }
 
-const onFinish = (values: any) => {
-  console.log(values)
-}
-
-const AbsentForm: React.FC<{ absent: AbsentInput }> = ({ absent }) => {
-  const [building, setBuilding] = useState<BuildingDto["DEFAULT"]>()
-  const [dormitory, setDormitory] = useState<DormitoryDto["DEFAULT"]>()
-  const [student, setStudent] = useState<StudentDto["DEFAULT"]>()
+const AbsentForm: React.FC<{
+  absent?: AbsentDto["AbsentController/DEFAULT_FETCHER"] | null
+  onDone?: () => void
+  labelCol?: ColProps
+}> = memo(({ absent, onDone, labelCol }) => {
+  const onFinish = ({ building, dormitory, student, reason }: any) => {
+    api.absentController
+      .put({
+        body: {
+          id: absent?.id,
+          buildingId: building.value,
+          dormitoryId: dormitory.value,
+          studentId: student.value,
+          reason: reason,
+        },
+      })
+      .then((r) => {
+        if (r.code == 200) {
+          message.success("更新成功")
+        }
+      })
+    if (typeof onDone == "function") {
+      onDone()
+    }
+  }
 
   return (
     <>
-      <Form onFinish={onFinish} labelCol={{ span: 1 }}>
+      <Form onFinish={onFinish} labelCol={labelCol}>
         <Form.Item name="building" label="宿舍楼" rules={[{ required: true, message: "请选宿舍楼!" }]}>
           <DebounceSelect
             showSearch
-            value={building}
-            placeholder="请选择宿舍楼"
+            placeholder={absent?.building.name ?? "请选择宿舍楼"}
             fetchOptions={fetchBuilding}
-            onChange={(newValue) => {
-              setBuilding(newValue as BuildingDto["DEFAULT"])
-            }}
           />
         </Form.Item>
         <Form.Item name="dormitory" label="宿舍" rules={[{ required: true, message: "请选择宿舍!" }]}>
           <DebounceSelect
             showSearch
-            value={dormitory}
-            placeholder="请选择宿舍"
+            placeholder={absent?.dormitory.name ?? "请选择宿舍"}
             fetchOptions={fetchDormitory}
-            onChange={(newValue) => {
-              setDormitory(newValue as DormitoryDto["DEFAULT"])
-            }}
           />
         </Form.Item>
         <Form.Item name="student" label="学生" rules={[{ required: true, message: "请选择学生!" }]}>
-          <DebounceSelect
-            showSearch
-            value={student}
-            placeholder="请选择学生"
-            fetchOptions={fetchStudent}
-            onChange={(newValue) => {
-              setStudent(newValue as StudentDto["DEFAULT"])
-            }}
-          />
+          <DebounceSelect showSearch placeholder={absent?.student.name ?? "请选择学生"} fetchOptions={fetchStudent} />
         </Form.Item>
         <Form.Item name="reason" label="原因" rules={[{ required: true, message: "请选输入原因!" }]}>
-          <Input placeholder="请选输入原因" value={absent.reason} />
+          <Input placeholder={absent?.reason ?? "请输入原因"} />
         </Form.Item>
         <Button className="w-100" type="primary" htmlType="submit">
           提交
@@ -93,6 +94,6 @@ const AbsentForm: React.FC<{ absent: AbsentInput }> = ({ absent }) => {
       </Form>
     </>
   )
-}
+})
 
 export default AbsentForm

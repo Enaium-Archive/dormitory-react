@@ -29,22 +29,4 @@ import org.babyfish.jimmer.sql.kt.fetcher.newFetcher
 import org.springframework.stereotype.Repository
 
 @Repository
-interface AbsentRepository : KRepository<Absent,Int> {
-    companion object {
-        val DEFAULT_FETCHER = newFetcher(Absent::class).by {
-            allScalarFields()
-            building {
-                allScalarFields()
-            }
-            dormitory {
-                allScalarFields()
-            }
-            student {
-                allScalarFields()
-            }
-            operator {
-                allScalarFields()
-            }
-        }
-    }
-}
+interface AbsentRepository : KRepository<Absent,Int>

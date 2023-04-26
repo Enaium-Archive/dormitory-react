@@ -32,14 +32,22 @@ interface Absent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int
 
+    val buildingId: Int
+
     @ManyToOne
     val building: Building
+
+    val dormitoryId: Int
 
     @ManyToOne
     val dormitory: Dormitory
 
+    val studentId: Int
+
     @ManyToOne
     val student: Student
+
+    val operatorId: Int
 
     @ManyToOne
     val operator: Operator

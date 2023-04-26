@@ -23,13 +23,18 @@
 import { ColumnsType } from "antd/es/table"
 import { useQuery } from "react-query"
 import { api } from "@/common/ApiInstance.ts"
-import { Button, message, Popconfirm, Table } from "antd"
+import { Button, Card, message, Modal, Popconfirm, Table } from "antd"
 import { AbsentDto, DormitoryDto, OperatorDto, StudentDto } from "@/__generated/model/dto"
 import { useImmer } from "use-immer"
 import { RequestOf } from "@/__generated"
-import { useCallback } from "react"
+import React, { memo, useCallback } from "react"
+import { atom, useAtom, useSetAtom } from "jotai"
+import AbsentForm from "@/components/admin/AbsentForm.tsx"
+import AbsentSearchForm from "@/components/admin/AbsentSearchForm.tsx"
 
-const columns: ColumnsType<AbsentDto["DEFAULT"]> = [
+const absentAtom = atom<AbsentDto["AbsentController/DEFAULT_FETCHER"] | null>(null)
+
+const columns: ColumnsType<AbsentDto["AbsentController/DEFAULT_FETCHER"]> = [
   {
     title: "编号",
     dataIndex: "id",
@@ -60,40 +65,61 @@ const columns: ColumnsType<AbsentDto["DEFAULT"]> = [
     render: (operator: OperatorDto["DEFAULT"]) => <div>{operator.name}</div>,
   },
   {
+    title: "时间",
+    dataIndex: "createDate",
+    key: "createDate",
+  },
+  {
+    title: "原因",
+    dataIndex: "reason",
+    key: "reason",
+  },
+  {
     title: "操作",
-    render: (_, record: AbsentDto["DEFAULT"]) => (
-      <>
-        <Button.Group>
-          <Button size="small" type="primary">
-            修改
-          </Button>
-          <Popconfirm
-            title="删除记录"
-            description="你确定要删除这条记录吗?"
-            onConfirm={() => {
-              api.absentController.delete({ id: record.id }).then((r) => {
-                if (r.code == 200) {
-                  message.success("删除成功")
-                }
-              })
-            }}
-            onCancel={() => {
-              message.info("取消删除")
-            }}
-            okText="确认"
-            cancelText="取消"
-          >
-            <Button size="small" type="primary" danger>
-              删除
-            </Button>
-          </Popconfirm>
-        </Button.Group>
-      </>
-    ),
+    render: (_, record: AbsentDto["AbsentController/DEFAULT_FETCHER"]) => {
+      return <AbsentAction absent={record} />
+    },
   },
 ]
 
-const AbsentRecord = () => {
+const AbsentAction: React.FC<{ absent: AbsentDto["AbsentController/DEFAULT_FETCHER"] }> = ({ absent }) => {
+  const setAbsent = useSetAtom(absentAtom)
+  return (
+    <>
+      <Button.Group>
+        <Button size="small" type="primary" onClick={() => setAbsent(absent)}>
+          修改
+        </Button>
+        <Popconfirm
+          title="删除记录"
+          description="你确定要删除这条记录吗?"
+          onConfirm={() => {
+            api.absentController.delete({ id: absent.id }).then((r) => {
+              if (r.code == 200) {
+                message.success("删除成功")
+              }
+            })
+          }}
+          onCancel={() => {
+            message.info("取消删除")
+          }}
+          okText="确认"
+          cancelText="取消"
+        >
+          <Button size="small" type="primary" danger>
+            删除
+          </Button>
+        </Popconfirm>
+      </Button.Group>
+    </>
+  )
+}
+
+const done = () => {
+  console.log("123")
+}
+
+const AbsentRecord = memo(() => {
   const [options, setOptions] = useImmer<RequestOf<typeof api.absentController.get>>(() => {
     return {
       page: 0,
@@ -123,17 +149,27 @@ const AbsentRecord = () => {
     ),
   }
 
+  const [absent, setAbsent] = useAtom(absentAtom)
+
   return (
     <>
+      <Card title="搜索">
+        <AbsentSearchForm  />
+      </Card>
       <Table
         columns={columns}
         dataSource={data?.metadata?.content}
         pagination={pagination}
-        rowKey={(record: AbsentDto["DEFAULT"]) => record.id}
+        rowKey={(record: AbsentDto["AbsentController/DEFAULT_FETCHER"]) => record.id}
         bordered
       />
+      <Modal open={absent != null} width={600} footer={<></>} onCancel={() => setAbsent(null)}>
+        <div className="m-3">
+          <AbsentForm labelCol={{ span: 3 }} absent={absent} onDone={done} />
+        </div>
+      </Modal>
     </>
   )
-}
+})
 
 export default AbsentRecord

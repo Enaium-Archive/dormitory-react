@@ -15,7 +15,7 @@ export class AbsentController {
     }
     
     async get(options: AbsentControllerOptions['get']): Promise<
-        ResponseBody<Page<AbsentDto['DEFAULT']> | undefined>
+        ResponseBody<Page<AbsentDto['AbsentController/DEFAULT_FETCHER']> | undefined>
     > {
         let _uri = '/absent/';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
@@ -34,7 +34,7 @@ export class AbsentController {
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }
-        return (await this.executor({uri: _uri, method: 'GET'})) as ResponseBody<Page<AbsentDto['DEFAULT']> | undefined>
+        return (await this.executor({uri: _uri, method: 'GET'})) as ResponseBody<Page<AbsentDto['AbsentController/DEFAULT_FETCHER']> | undefined>
     }
     
     async put(options: AbsentControllerOptions['put']): Promise<
