@@ -27,6 +27,7 @@ import cn.enaium.dormitory.model.entity.input.DormitoryInput
 import cn.enaium.dormitory.model.response.ResponseBody
 import cn.enaium.dormitory.repository.DormitoryRepository
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -41,10 +42,19 @@ class DormitoryController(
 ) {
     @GetMapping
     fun get(
-        @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "1") size: Int
+        @RequestParam(defaultValue = "0") page: Int = 0,
+        @RequestParam(defaultValue = "10") size: Int = 10,
+        dormitoryInput: DormitoryInput?
     ): ResponseBody<Page<Dormitory>?> {
-        return ResponseBody.Builder.success(metadata = dormitoryRepository.findAll(page, size))
+        return ResponseBody.Builder.success(
+            metadata = dormitoryRepository.findAllByDormitory(
+                PageRequest.of(
+                    page,
+                    size
+                ),
+                dormitoryInput
+            )
+        )
     }
 
     @PutMapping

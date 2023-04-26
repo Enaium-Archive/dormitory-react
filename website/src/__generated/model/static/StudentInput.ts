@@ -4,7 +4,7 @@ export interface StudentInput {
     
     readonly dormitoryId?: number;
     
-    readonly gender?: number;
+    readonly gender?: boolean;
     
     readonly id?: number;
     

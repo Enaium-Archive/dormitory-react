@@ -24,9 +24,16 @@ val jimmer: String by project
 val mapstruct: String by project
 val satoken: String by project
 val springdoc: String by project
+val therapi: String by project
 
 dependencies {
-    implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:$jimmer")
+//    implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:$jimmer")
+    implementation(files("C:\\Users\\Enaium\\Projects\\jimmer\\project\\jimmer-spring-boot-starter\\build\\libs\\jimmer-spring-boot-starter-0.7.44.jar"))
+    implementation("org.babyfish.jimmer:jimmer-sql:$jimmer")
+    implementation("org.babyfish.jimmer:jimmer-sql-kotlin:$jimmer")
+    implementation("org.babyfish.jimmer:jimmer-client:$jimmer")
+    implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    implementation("org.springframework.data:spring-data-commons")
     ksp("org.babyfish.jimmer:jimmer-ksp:$jimmer")
     implementation("org.mapstruct:mapstruct:$mapstruct")
     kapt("org.mapstruct:mapstruct-processor:$mapstruct")
@@ -37,11 +44,14 @@ dependencies {
     implementation("org.apache.commons:commons-pool2")
 
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:$springdoc")
+    implementation("com.github.therapi:therapi-runtime-javadoc:$therapi")
+    implementation("com.github.therapi:therapi-runtime-javadoc-scribe:$therapi")
 
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
     runtimeOnly("org.mariadb.jdbc:mariadb-java-client")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
@@ -55,4 +65,10 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+kotlin {
+    sourceSets.main {
+        kotlin.srcDir("build/generated/ksp/main/kotlin")
+    }
 }

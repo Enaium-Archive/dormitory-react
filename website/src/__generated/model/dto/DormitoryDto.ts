@@ -4,7 +4,6 @@ export type DormitoryDto = {
         readonly building: {readonly id: number}, 
         readonly name: string, 
         readonly type: number, 
-        readonly available: number, 
         readonly telephone: string
     }
 }

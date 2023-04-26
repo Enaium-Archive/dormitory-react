@@ -38,13 +38,13 @@ data class DormitoryInput(
 ) : Input<Dormitory> {
 
     override fun toEntity(): Dormitory {
-        return CONVERTER.toTDormitory(this)
+        return CONVERTER.toDormitory(this)
     }
 
     @Mapper
     interface Converter {
         @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-        fun toTDormitory(input: DormitoryInput): Dormitory
+        fun toDormitory(input: DormitoryInput): Dormitory
     }
 
     companion object {

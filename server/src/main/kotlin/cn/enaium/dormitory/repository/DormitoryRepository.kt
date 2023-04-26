@@ -22,9 +22,27 @@
 
 package cn.enaium.dormitory.repository
 
-import cn.enaium.dormitory.model.entity.Dormitory
+import cn.enaium.dormitory.model.entity.*
+import cn.enaium.dormitory.model.entity.input.DormitoryInput
 import org.babyfish.jimmer.spring.repository.KRepository
+import org.babyfish.jimmer.sql.kt.ast.expression.eq
+import org.babyfish.jimmer.sql.kt.ast.expression.ilike
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 
 @Repository
-interface DormitoryRepository : KRepository<Dormitory,Int>
+interface DormitoryRepository : KRepository<Dormitory, Int> {
+    fun findAllByDormitory(pageable: Pageable, dormitoryInput: DormitoryInput?): Page<Dormitory> =
+        pager(pageable).execute(sql.createQuery(Dormitory::class) {
+
+            if (dormitoryInput != null) {
+                dormitoryInput.id?.let { where(table.id eq it) }
+                dormitoryInput.name?.takeIf { it.isNotEmpty() }?.let { where(table.name ilike it) }
+                dormitoryInput.type?.let { where(table.type eq it) }
+                dormitoryInput.buildingId?.let { where(table.building.id eq it) }
+            }
+
+            select(table)
+        })
+}

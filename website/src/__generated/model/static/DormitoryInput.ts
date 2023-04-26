@@ -1,7 +1,5 @@
 export interface DormitoryInput {
     
-    readonly available?: number;
-    
     readonly buildingId?: number;
     
     readonly id?: number;

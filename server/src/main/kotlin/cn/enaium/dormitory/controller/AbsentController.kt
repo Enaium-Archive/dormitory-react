@@ -44,7 +44,7 @@ class AbsentController(
     @GetMapping
     fun get(
         @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "1") size: Int
+        @RequestParam(defaultValue = "1") size: Int,
     ): ResponseBody<Page<Absent>?> {
         return ResponseBody.Builder.success(
             metadata = absentRepository.findAll(page, size, DEFAULT_FETCHER)

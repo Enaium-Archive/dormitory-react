@@ -35,13 +35,13 @@ data class RoleInput(
 ) : Input<Role> {
 
     override fun toEntity(): Role {
-        return CONVERTER.toTRole(this)
+        return CONVERTER.toRole(this)
     }
 
     @Mapper
     interface Converter {
         @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-        fun toTRole(input: RoleInput): Role
+        fun toRole(input: RoleInput): Role
     }
 
     companion object {

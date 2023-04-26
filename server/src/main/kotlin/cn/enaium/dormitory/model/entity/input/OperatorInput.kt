@@ -40,13 +40,13 @@ data class OperatorInput(
 ) : Input<Operator> {
 
     override fun toEntity(): Operator {
-        return CONVERTER.toTOperator(this)
+        return CONVERTER.toOperator(this)
     }
 
     @Mapper
     interface Converter {
         @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-        fun toTOperator(input: OperatorInput): Operator
+        fun toOperator(input: OperatorInput): Operator
     }
 
     companion object {

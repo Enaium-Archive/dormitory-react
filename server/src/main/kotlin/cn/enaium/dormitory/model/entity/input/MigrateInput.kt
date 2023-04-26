@@ -39,13 +39,13 @@ data class MigrateInput(
 ) : Input<Migrate> {
 
     override fun toEntity(): Migrate {
-        return CONVERTER.toTMigrate(this)
+        return CONVERTER.toMigrate(this)
     }
 
     @Mapper
     interface Converter {
         @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-        fun toTMigrate(input: MigrateInput): Migrate
+        fun toMigrate(input: MigrateInput): Migrate
     }
 
     companion object {

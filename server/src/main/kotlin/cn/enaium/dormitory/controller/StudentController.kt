@@ -27,6 +27,7 @@ import cn.enaium.dormitory.model.entity.input.StudentInput
 import cn.enaium.dormitory.model.response.ResponseBody
 import cn.enaium.dormitory.repository.StudentRepository
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -41,10 +42,16 @@ class StudentController(
 ) {
     @GetMapping
     fun get(
-        @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "1") size: Int
+        @RequestParam(defaultValue = "0") page: Int = 0,
+        @RequestParam(defaultValue = "10") size: Int = 10,
+        studentInput: StudentInput?
     ): ResponseBody<Page<Student>?> {
-        return ResponseBody.Builder.success(metadata = studentRepository.findAll(page, size))
+        return ResponseBody.Builder.success(
+            metadata = studentRepository.findAllByStudent(
+                PageRequest.of(page, size),
+                studentInput
+            )
+        )
     }
 
     @PutMapping

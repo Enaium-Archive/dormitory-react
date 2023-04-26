@@ -22,9 +22,26 @@
 
 package cn.enaium.dormitory.repository
 
-import cn.enaium.dormitory.model.entity.Student
+import cn.enaium.dormitory.model.entity.*
+import cn.enaium.dormitory.model.entity.input.StudentInput
 import org.babyfish.jimmer.spring.repository.KRepository
+import org.babyfish.jimmer.sql.kt.ast.expression.eq
+import org.babyfish.jimmer.sql.kt.ast.expression.ilike
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 
 @Repository
-interface StudentRepository : KRepository<Student,Int>
+interface StudentRepository : KRepository<Student, Int> {
+    fun findAllByStudent(pageable: Pageable, studentInput: StudentInput?): Page<Student> =
+        pager(pageable).execute(sql.createQuery(Student::class) {
+            if (studentInput != null) {
+                studentInput.number?.takeIf { it.isNotEmpty() }?.let { where(table.number ilike it) }
+                studentInput.name?.takeIf { it.isNotEmpty() }?.let { where(table.name ilike it) }
+                studentInput.gender?.let { where(table.gender eq it) }
+                studentInput.dormitoryId?.let { where(table.dormitory.id eq it) }
+                studentInput.state?.takeIf { it.isNotEmpty() }?.let { where(table.state ilike it) }
+            }
+            select(table)
+        })
+}

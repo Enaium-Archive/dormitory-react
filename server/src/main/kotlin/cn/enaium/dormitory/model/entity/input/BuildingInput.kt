@@ -32,18 +32,17 @@ import org.mapstruct.factory.Mappers
 data class BuildingInput(
     val id: Int?,
     val name: String?,
-    val introduction: String?,
     val operatorId: Int?,
 ) : Input<Building> {
 
     override fun toEntity(): Building {
-        return CONVERTER.toTBuilding(this)
+        return CONVERTER.toBuilding(this)
     }
 
     @Mapper
     interface Converter {
         @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-        fun toTBuilding(input: BuildingInput): Building
+        fun toBuilding(input: BuildingInput): Building
     }
 
     companion object {

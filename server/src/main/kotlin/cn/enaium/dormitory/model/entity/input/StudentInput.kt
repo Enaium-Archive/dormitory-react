@@ -34,20 +34,20 @@ data class StudentInput(
     val id: Int?,
     val number: String?,
     val name: String?,
-    val gender: Int?,
+    val gender: Boolean?,
     val dormitoryId: Int?,
     val state: String?,
     val createDate: LocalDateTime?,
 ) : Input<Student> {
 
     override fun toEntity(): Student {
-        return CONVERTER.toTStudent(this)
+        return CONVERTER.toStudent(this)
     }
 
     @Mapper
     interface Converter {
         @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-        fun toTStudent(input: StudentInput): Student
+        fun toStudent(input: StudentInput): Student
     }
 
     companion object {

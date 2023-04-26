@@ -41,13 +41,13 @@ data class AbsentInput(
 ) : Input<Absent> {
 
     override fun toEntity(): Absent {
-        return CONVERTER.toTAbsent(this)
+        return CONVERTER.toAbsent(this)
     }
 
     @Mapper
     interface Converter {
         @BeanMapping(unmappedTargetPolicy = ReportingPolicy.IGNORE)
-        fun toTAbsent(input: AbsentInput): Absent
+        fun toAbsent(input: AbsentInput): Absent
     }
 
     companion object {
