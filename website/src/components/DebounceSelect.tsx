@@ -9,11 +9,7 @@ export interface DebounceSelectProps<ValueType>
 }
 
 const DebounceSelect = memo(
-  <ValueType = any,>({
-    fetchOptions,
-    debounceTimeout = 800,
-    ...props
-  }: DebounceSelectProps<ValueType>) => {
+  <ValueType = any,>({ fetchOptions, debounceTimeout = 800, ...props }: DebounceSelectProps<ValueType>) => {
     const [fetching, setFetching] = useState(false)
     const [options, setOptions] = useState<ReadonlyArray<ValueType>>([])
     const fetchRef = useRef(0)

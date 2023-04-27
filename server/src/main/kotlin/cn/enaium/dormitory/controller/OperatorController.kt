@@ -24,11 +24,13 @@ package cn.enaium.dormitory.controller
 
 import cn.enaium.dormitory.model.entity.Operator
 import cn.enaium.dormitory.model.entity.by
+import cn.enaium.dormitory.model.entity.input.OperatorInput
 import cn.enaium.dormitory.model.response.ResponseBody
 import cn.enaium.dormitory.repository.OperatorRepository
 import org.babyfish.jimmer.client.FetchBy
 import org.babyfish.jimmer.sql.kt.fetcher.newFetcher
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -51,26 +53,13 @@ class OperatorController(
      */
     @GetMapping
     fun get(
-        @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "1") size: Int
+        @RequestParam(defaultValue = "0") page: Int = 0,
+        @RequestParam(defaultValue = "1") size: Int = 10,
+        operatorInput: OperatorInput?
     ): ResponseBody<Page<@FetchBy("DEFAULT_FETCHER") Operator>?> {
         return ResponseBody.Builder.success(
-            metadata = operatorRepository.findAll(page, size, DEFAULT_FETCHER)
+            metadata = operatorRepository.findAllByOperator(PageRequest.of(page, size), operatorInput)
         )
-    }
-
-    /**
-     * 根据ID获取操作员
-     *
-     * @param id 操作员唯一身份
-     * @return 操作员
-     */
-    @GetMapping("{id}")
-    fun get(@PathVariable id: Int): ResponseBody<Operator?> {
-        operatorRepository.findNullable(id, DEFAULT_FETCHER)?.let {
-            return ResponseBody.Builder.success(metadata = it)
-        }
-        return ResponseBody.Builder.fail(status = ResponseBody.Status.OPERATOR_DOESNT_EXIST)
     }
 
     /**

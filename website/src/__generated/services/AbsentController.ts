@@ -20,6 +20,55 @@ export class AbsentController {
         let _uri = '/absent/';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
         let _value: any = undefined;
+        _value = options.absentInput?.buildingId;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'buildingId='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        _value = options.absentInput?.createDate;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'createDate='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        _value = options.absentInput?.dormitoryId;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'dormitoryId='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        _value = options.absentInput?.id;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'id='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        _value = options.absentInput?.operatorId;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'operatorId='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        _value = options.absentInput?.reason;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'reason='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        _value = options.absentInput?.studentId;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'studentId='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
         _value = options.page;
         if (_value !== undefined && _value !== null) {
             _uri += _separator
@@ -47,6 +96,10 @@ export class AbsentController {
 
 export type AbsentControllerOptions = {
     'delete': {readonly id: number},
-    'get': {readonly page: number, readonly size: number},
+    'get': {
+        readonly page: number, 
+        readonly size: number, 
+        readonly absentInput?: AbsentInput
+    },
     'put': {readonly body: AbsentInput}
 }

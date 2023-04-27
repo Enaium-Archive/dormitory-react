@@ -1,6 +1,6 @@
 import type { Executor } from '../';
 import type { OperatorDto } from '../model/dto';
-import type { Page, ResponseBody, Void } from '../model/static';
+import type { OperatorInput, Page, ResponseBody, Void } from '../model/static';
 
 export class OperatorController {
     
@@ -15,19 +15,60 @@ export class OperatorController {
     }
     
     async get(options: OperatorControllerOptions['get']): Promise<
-        ResponseBody<OperatorDto['DEFAULT'] | undefined>
-    > {
-        let _uri = '/operator/';
-        _uri += encodeURIComponent(options.id);
-        return (await this.executor({uri: _uri, method: 'GET'})) as ResponseBody<OperatorDto['DEFAULT'] | undefined>
-    }
-    
-    async get_2(options: OperatorControllerOptions['get_2']): Promise<
         ResponseBody<Page<OperatorDto['OperatorController/DEFAULT_FETCHER']> | undefined>
     > {
         let _uri = '/operator/';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
         let _value: any = undefined;
+        _value = options.operatorInput.gender;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'gender='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        _value = options.operatorInput.id;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'id='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        _value = options.operatorInput.name;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'name='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        _value = options.operatorInput.password;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'password='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        _value = options.operatorInput.phone;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'phone='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        _value = options.operatorInput.role;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'role='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        _value = options.operatorInput.username;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'username='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
         _value = options.page;
         if (_value !== undefined && _value !== null) {
             _uri += _separator
@@ -48,6 +89,9 @@ export class OperatorController {
 
 export type OperatorControllerOptions = {
     'delete': {readonly id: number},
-    'get': {readonly id: number},
-    'get_2': {readonly page: number, readonly size: number}
+    'get': {
+        readonly page: number, 
+        readonly size: number, 
+        readonly operatorInput: OperatorInput
+    }
 }

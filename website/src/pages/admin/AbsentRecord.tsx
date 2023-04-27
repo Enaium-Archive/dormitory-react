@@ -62,7 +62,7 @@ const columns: ColumnsType<AbsentDto["AbsentController/DEFAULT_FETCHER"]> = [
     title: "操作员",
     dataIndex: "operator",
     key: "operator",
-    render: (operator: OperatorDto["DEFAULT"]) => <div>{operator.name}</div>,
+    render: (operator: OperatorDto["OperatorController/DEFAULT_FETCHER"]) => <div>{operator.name}</div>,
   },
   {
     title: "时间",
@@ -115,10 +115,6 @@ const AbsentAction: React.FC<{ absent: AbsentDto["AbsentController/DEFAULT_FETCH
   )
 }
 
-const done = () => {
-  console.log("123")
-}
-
 const AbsentRecord = memo(() => {
   const [options, setOptions] = useImmer<RequestOf<typeof api.absentController.get>>(() => {
     return {
@@ -149,12 +145,35 @@ const AbsentRecord = memo(() => {
     ),
   }
 
+  const onSearch = useCallback(
+    (values: {
+      building: { value: number }
+      dormitory: { value: number }
+      student: { value: number }
+      operator: { value: number }
+      createDate: { $d: Date }
+      reason: { value: string }
+    }) => {
+      setOptions((draft) => {
+        draft.absentInput = {
+          buildingId: values?.building?.value,
+          dormitoryId: values?.dormitory?.value,
+          studentId: values?.student?.value,
+          operatorId: values?.operator?.value,
+          createDate: values?.createDate?.$d.getTime().toString(),
+          reason: values?.reason?.value,
+        }
+      })
+    },
+    [setOptions],
+  )
+
   const [absent, setAbsent] = useAtom(absentAtom)
 
   return (
     <>
       <Card title="搜索">
-        <AbsentSearchForm  />
+        <AbsentSearchForm onFinish={onSearch} />
       </Card>
       <Table
         columns={columns}
@@ -165,7 +184,7 @@ const AbsentRecord = memo(() => {
       />
       <Modal open={absent != null} width={600} footer={<></>} onCancel={() => setAbsent(null)}>
         <div className="m-3">
-          <AbsentForm labelCol={{ span: 3 }} absent={absent} onDone={done} />
+          <AbsentForm labelCol={{ span: 3 }} absent={absent} />
         </div>
       </Modal>
     </>

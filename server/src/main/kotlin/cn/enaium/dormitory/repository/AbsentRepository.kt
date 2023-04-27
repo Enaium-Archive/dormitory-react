@@ -22,11 +22,27 @@
 
 package cn.enaium.dormitory.repository
 
-import cn.enaium.dormitory.model.entity.Absent
-import cn.enaium.dormitory.model.entity.by
+import cn.enaium.dormitory.controller.AbsentController
+import cn.enaium.dormitory.model.entity.*
+import cn.enaium.dormitory.model.entity.input.AbsentInput
 import org.babyfish.jimmer.spring.repository.KRepository
-import org.babyfish.jimmer.sql.kt.fetcher.newFetcher
+import org.babyfish.jimmer.sql.kt.ast.expression.eq
+import org.babyfish.jimmer.sql.kt.ast.expression.ilike
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 
 @Repository
-interface AbsentRepository : KRepository<Absent,Int>
+interface AbsentRepository : KRepository<Absent, Int> {
+    fun findAllByAbsent(pageable: Pageable, absentInput: AbsentInput?): Page<Absent> =
+        pager(pageable).execute(sql.createQuery(Absent::class) {
+            if (absentInput != null) {
+                absentInput.buildingId?.let { where(table.buildingId eq it) }
+                absentInput.dormitoryId?.let { where(table.dormitoryId eq it) }
+                absentInput.studentId?.let { where(table.studentId eq it) }
+                absentInput.operatorId?.let { where(table.operatorId eq it) }
+                absentInput.reason?.takeIf { it.isNotEmpty() }?.let { where(table.reason ilike it) }
+            }
+            select(table.fetch(AbsentController.DEFAULT_FETCHER))
+        })
+}

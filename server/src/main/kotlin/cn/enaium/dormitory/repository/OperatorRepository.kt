@@ -22,11 +22,24 @@
 
 package cn.enaium.dormitory.repository
 
+import cn.enaium.dormitory.controller.OperatorController
 import cn.enaium.dormitory.model.entity.Operator
+import cn.enaium.dormitory.model.entity.input.OperatorInput
+import cn.enaium.dormitory.model.entity.name
 import org.babyfish.jimmer.spring.repository.KRepository
+import org.babyfish.jimmer.sql.kt.ast.expression.ilike
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 
 @Repository
 interface OperatorRepository : KRepository<Operator, Int> {
     fun findByUsername(username: String): Operator?
+    fun findAllByOperator(pageable: Pageable, operatorInput: OperatorInput?): Page<Operator>? =
+        pager(pageable).execute(sql.createQuery(Operator::class) {
+            if (operatorInput != null) {
+                operatorInput.name?.takeIf { it.isNotEmpty() }?.let { where(table.name ilike it) }
+            }
+            select(table.fetch(OperatorController.DEFAULT_FETCHER))
+        })
 }

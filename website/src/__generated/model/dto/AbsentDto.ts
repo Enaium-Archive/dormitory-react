@@ -1,6 +1,10 @@
 export type AbsentDto = {
     'AbsentController/DEFAULT_FETCHER': {
         readonly id: number, 
+        readonly buildingId: number, 
+        readonly dormitoryId: number, 
+        readonly studentId: number, 
+        readonly operatorId: number, 
         readonly createDate: string, 
         readonly reason: string, 
         readonly building: {

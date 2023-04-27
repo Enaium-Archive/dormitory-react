@@ -31,6 +31,7 @@ import cn.enaium.dormitory.repository.AbsentRepository
 import org.babyfish.jimmer.client.FetchBy
 import org.babyfish.jimmer.sql.kt.fetcher.newFetcher
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.*
 import java.time.LocalDateTime
 
@@ -53,11 +54,12 @@ class AbsentController(
      */
     @GetMapping
     fun get(
-        @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "1") size: Int,
+        @RequestParam(defaultValue = "0") page: Int = 0,
+        @RequestParam(defaultValue = "1") size: Int = 10,
+        absentInput: AbsentInput?
     ): ResponseBody<Page<@FetchBy("DEFAULT_FETCHER") Absent>?> {
         return ResponseBody.Builder.success(
-            metadata = absentRepository.findAll(page, size, DEFAULT_FETCHER)
+            metadata = absentRepository.findAllByAbsent(PageRequest.of(page, size), absentInput)
         )
     }
 
