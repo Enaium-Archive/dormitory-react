@@ -20,10 +20,3 @@
  * SOFTWARE.
  */
 
-import React from "react"
-
-const AdminManager = () => {
-  return <div></div>
-}
-
-export default AdminManager

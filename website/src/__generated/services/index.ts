@@ -10,6 +10,8 @@ export { MigrateController } from './MigrateController';
 export type { MigrateControllerOptions } from './MigrateController';
 export { OperatorController } from './OperatorController';
 export type { OperatorControllerOptions } from './OperatorController';
+export { RoleController } from './RoleController';
+export type { RoleControllerOptions } from './RoleController';
 export { StateController } from './StateController';
 export type { StateControllerOptions } from './StateController';
 export { StudentController } from './StudentController';

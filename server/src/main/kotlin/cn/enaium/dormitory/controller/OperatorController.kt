@@ -80,6 +80,9 @@ class OperatorController(
         val DEFAULT_FETCHER = newFetcher(Operator::class).by {
             allScalarFields()
             password(false)
+            role {
+                allScalarFields()
+            }
         }
     }
 }

@@ -13,6 +13,8 @@ export type ApiErrors = {
     },
     "operatorController": {
     },
+    "roleController": {
+    },
     "stateController": {
     },
     "studentController": {

@@ -24,7 +24,7 @@ import { ColumnsType } from "antd/es/table"
 import { useQuery } from "react-query"
 import { api } from "@/common/ApiInstance.ts"
 import { Button, Card, message, Modal, Popconfirm, Table } from "antd"
-import { AbsentDto, DormitoryDto, OperatorDto, StudentDto } from "@/__generated/model/dto"
+import {AbsentDto, BuildingDto, DormitoryDto, OperatorDto, StudentDto} from "@/__generated/model/dto"
 import { useImmer } from "use-immer"
 import { RequestOf } from "@/__generated"
 import React, { memo, useCallback } from "react"
@@ -44,25 +44,25 @@ const columns: ColumnsType<AbsentDto["AbsentController/DEFAULT_FETCHER"]> = [
     title: "宿舍楼",
     dataIndex: "building",
     key: "building",
-    render: (building: DormitoryDto["DEFAULT"]) => <div>{building.name}</div>,
+    render: (building?: BuildingDto["DEFAULT"]) => <div>{building?.name}</div>,
   },
   {
     title: "宿舍",
     dataIndex: "dormitory",
     key: "dormitory",
-    render: (dormitory: DormitoryDto["DEFAULT"]) => <div>{dormitory.name}</div>,
+    render: (dormitory?: DormitoryDto["DEFAULT"]) => <div>{dormitory?.name}</div>,
   },
   {
     title: "学生",
     dataIndex: "student",
     key: "student",
-    render: (student: StudentDto["DEFAULT"]) => <div>{student.name}</div>,
+    render: (student?: StudentDto["DEFAULT"]) => <div>{student?.name}</div>,
   },
   {
     title: "操作员",
     dataIndex: "operator",
     key: "operator",
-    render: (operator: OperatorDto["OperatorController/DEFAULT_FETCHER"]) => <div>{operator.name}</div>,
+    render: (operator?: OperatorDto["OperatorController/DEFAULT_FETCHER"]) => <div>{operator?.name}</div>,
   },
   {
     title: "时间",

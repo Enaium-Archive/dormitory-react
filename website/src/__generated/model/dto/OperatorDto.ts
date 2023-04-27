@@ -4,6 +4,10 @@ export type OperatorDto = {
         readonly username: string, 
         readonly name: string, 
         readonly gender: boolean, 
-        readonly phone: number
+        readonly phone: number, 
+        readonly role: {
+            readonly id: number, 
+            readonly name: string
+        }
     }
 }

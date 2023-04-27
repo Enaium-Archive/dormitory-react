@@ -85,7 +85,7 @@ const AbsentForm: React.FC<{
         <Form.Item name="student" label="学生" rules={[{ required: true, message: "请选择学生!" }]}>
           <DebounceSelect showSearch placeholder={absent?.student.name ?? "请选择学生"} fetchOptions={fetchStudent} />
         </Form.Item>
-        <Form.Item name="reason" label="原因" rules={[{ required: true, message: "请选输入原因!" }]}>
+        <Form.Item name="reason" label="原因" rules={[{ required: true, message: "请输入原因!" }]}>
           <Input placeholder={absent?.reason ?? "请输入原因"} />
         </Form.Item>
         <Button className="w-100" type="primary" htmlType="submit">
