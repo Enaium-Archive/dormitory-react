@@ -147,12 +147,12 @@ const AbsentRecord = memo(() => {
 
   const onSearch = useCallback(
     (values: {
-      building: { value: number }
-      dormitory: { value: number }
-      student: { value: number }
-      operator: { value: number }
-      createDate: { $d: Date }
-      reason: { value: string }
+      building?: { value: number }
+      dormitory?: { value: number }
+      student?: { value: number }
+      operator?: { value: number }
+      createDate?: { $d: Date }
+      reason?: { value: string }
     }) => {
       setOptions((draft) => {
         draft.absentInput = {

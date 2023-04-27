@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-import { Button, message, Popconfirm, Table } from "antd"
+import { Button, Card, message, Modal, Popconfirm, Table } from "antd"
 import { useQuery } from "react-query"
 import { api } from "@/common/ApiInstance.ts"
 import { useImmer } from "use-immer"
@@ -28,7 +28,10 @@ import { RequestOf } from "@/__generated"
 import { OperatorDto } from "@/__generated/model/dto"
 import React, { memo, useCallback } from "react"
 import { ColumnsType } from "antd/es/table"
-import { atom, useSetAtom } from "jotai"
+import { atom, useAtom, useSetAtom } from "jotai"
+import OperatorForm from "@/components/operator/OperatorForm.tsx"
+import { PlusOutlined } from "@ant-design/icons"
+import OperatorSearchForm from "@/components/operator/OperatorSearchForm.tsx"
 
 const operatorAtom = atom<OperatorDto["OperatorController/DEFAULT_FETCHER"] | null>(null)
 
@@ -121,7 +124,7 @@ const OperatorManager = () => {
   })
 
   const { data } = useQuery({
-    queryKey: ["AbsentRecord", options],
+    queryKey: ["OperatorManager", options],
     queryFn: () => api.operatorController.get(options),
   })
 
@@ -142,15 +145,58 @@ const OperatorManager = () => {
     ),
   }
 
+  const onSearch = useCallback(
+    (values: { username?: string; name?: string; gender?: number; phone?: number; role?: { value: number } }) => {
+      setOptions((draft) => {
+        draft.operatorInput = {
+          username: values?.username,
+          name: values?.name,
+          gender: values?.gender,
+          phone: values?.phone,
+          roleId: values?.role?.value,
+        }
+      })
+    },
+    [setOptions],
+  )
+
+  const [operator, setOperator] = useAtom(operatorAtom)
+
   return (
     <>
-      <Table
-        columns={columns}
-        dataSource={data?.metadata?.content}
-        pagination={pagination}
-        rowKey={(record: OperatorDto["OperatorController/DEFAULT_FETCHER"]) => record.id}
-        bordered
-      />
+      <Card title="搜索">
+        <OperatorSearchForm onFinish={onSearch} />
+      </Card>
+      <Card
+        title={
+          <div className="d-flex justify-content-between">
+            <div>操作员</div>
+            <Button
+              className="d-flex align-items-center"
+              icon={<PlusOutlined />}
+              type="primary"
+              onClick={() => {
+                setOperator({} as never)
+              }}
+            >
+              添加
+            </Button>
+          </div>
+        }
+      >
+        <Table
+          columns={columns}
+          dataSource={data?.metadata?.content}
+          pagination={pagination}
+          rowKey={(record: OperatorDto["OperatorController/DEFAULT_FETCHER"]) => record.id}
+          bordered
+        />
+      </Card>
+      <Modal open={operator != null} width={600} footer={<></>} onCancel={() => setOperator(null)}>
+        <div className="m-3">
+          <OperatorForm labelCol={{ span: 3 }} operator={operator} />
+        </div>
+      </Modal>
     </>
   )
 }

@@ -41,6 +41,8 @@ interface Operator {
 
     val phone: Long
 
+    val roleId: Int
+
     @OneToOne
     val role: Role
 
