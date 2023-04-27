@@ -22,8 +22,25 @@
 
 package cn.enaium.dormitory.configuration
 
+import cn.enaium.dormitory.interceptor.CorsInterceptor
+import cn.enaium.dormitory.interceptor.LocalAccessInterceptor
+import cn.enaium.dormitory.interceptor.SaTokenInterceptor
+import org.springframework.context.annotation.Configuration
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+
 /**
  * @author Enaium
  */
-class SaTokenConfiguration {
+@Configuration
+class InterceptorConfiguration(
+    val corsInterceptor: CorsInterceptor,
+    val localAccessInterceptor: LocalAccessInterceptor,
+    val saTokenInterceptor: SaTokenInterceptor
+) : WebMvcConfigurer {
+    override fun addInterceptors(registry: InterceptorRegistry) {
+        registry.addInterceptor(corsInterceptor)
+        registry.addInterceptor(localAccessInterceptor)
+        registry.addInterceptor(saTokenInterceptor)
+    }
 }

@@ -7,6 +7,8 @@ export type ApiErrors = {
     },
     "dormitoryController": {
     },
+    "menuController": {
+    },
     "migrateController": {
     },
     "operatorController": {

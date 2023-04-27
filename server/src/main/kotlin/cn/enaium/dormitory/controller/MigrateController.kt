@@ -22,6 +22,7 @@
 
 package cn.enaium.dormitory.controller
 
+import cn.dev33.satoken.annotation.SaCheckRole
 import cn.enaium.dormitory.model.entity.Migrate
 import cn.enaium.dormitory.model.entity.input.MigrateInput
 import cn.enaium.dormitory.model.response.ResponseBody
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.*
  *
  * @author Enaium
  */
+@SaCheckRole("system")
 @RestController
 @RequestMapping("/migrate/")
 class MigrateController(

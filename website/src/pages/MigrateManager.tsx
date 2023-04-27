@@ -20,30 +20,14 @@
  * SOFTWARE.
  */
 
-package cn.enaium.dormitory.model.entity
+import React from 'react';
 
-import org.babyfish.jimmer.sql.*
+const MigrateManager = () => {
+    return (
+        <div>
+            
+        </div>
+    );
+};
 
-@Entity
-@Table(name = "t_operator")
-interface Operator {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int
-
-    val username: String
-
-    val password: String
-
-    val name: String
-
-    val gender: Boolean
-
-    val phone: Long
-
-    @OneToOne
-    val role: Role
-
-    @OneToMany(mappedBy = "operator")
-    val absents: List<Absent>
-}
+export default MigrateManager;

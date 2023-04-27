@@ -22,6 +22,8 @@
 
 package cn.enaium.dormitory.controller
 
+import cn.dev33.satoken.annotation.SaCheckRole
+import cn.dev33.satoken.annotation.SaMode
 import cn.dev33.satoken.stp.StpUtil
 import cn.enaium.dormitory.model.entity.Absent
 import cn.enaium.dormitory.model.entity.by
@@ -40,6 +42,7 @@ import java.time.LocalDateTime
  *
  * @author Enaium
  */
+@SaCheckRole("system", "admin", mode = SaMode.OR)
 @RestController
 @RequestMapping("/absent/")
 class AbsentController(

@@ -20,30 +20,27 @@
  * SOFTWARE.
  */
 
-package cn.enaium.dormitory.model.entity
+import { Layout } from "antd"
+import SideMenu from "@/components/SideMenu.tsx"
+import { Outlet } from "react-router-dom"
 
-import org.babyfish.jimmer.sql.*
+const { Content, Sider } = Layout
 
-@Entity
-@Table(name = "t_operator")
-interface Operator {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int
-
-    val username: String
-
-    val password: String
-
-    val name: String
-
-    val gender: Boolean
-
-    val phone: Long
-
-    @OneToOne
-    val role: Role
-
-    @OneToMany(mappedBy = "operator")
-    val absents: List<Absent>
+const Manager = () => {
+  return (
+    <>
+      <Layout className="vh-100">
+        <Sider>
+          <SideMenu />
+        </Sider>
+        <Layout>
+          <Content>
+            <Outlet />
+          </Content>
+        </Layout>
+      </Layout>
+    </>
+  )
 }
+
+export default Manager

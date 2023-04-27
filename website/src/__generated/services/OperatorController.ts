@@ -55,10 +55,10 @@ export class OperatorController {
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }
-        _value = options.operatorInput.role;
+        _value = options.operatorInput.roleId;
         if (_value !== undefined && _value !== null) {
             _uri += _separator
-            _uri += 'role='
+            _uri += 'roleId='
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }

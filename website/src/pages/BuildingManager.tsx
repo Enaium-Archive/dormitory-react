@@ -19,31 +19,14 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import React from 'react';
 
-package cn.enaium.dormitory.model.entity
+const BuildingManager = () => {
+    return (
+        <div>
 
-import org.babyfish.jimmer.sql.*
+        </div>
+    );
+};
 
-@Entity
-@Table(name = "t_operator")
-interface Operator {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Int
-
-    val username: String
-
-    val password: String
-
-    val name: String
-
-    val gender: Boolean
-
-    val phone: Long
-
-    @OneToOne
-    val role: Role
-
-    @OneToMany(mappedBy = "operator")
-    val absents: List<Absent>
-}
+export default BuildingManager;

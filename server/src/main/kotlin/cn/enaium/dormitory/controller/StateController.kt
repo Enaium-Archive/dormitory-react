@@ -22,6 +22,7 @@
 
 package cn.enaium.dormitory.controller
 
+import cn.dev33.satoken.annotation.SaIgnore
 import cn.dev33.satoken.stp.StpUtil
 import cn.enaium.dormitory.model.entity.input.OperatorInput
 import cn.enaium.dormitory.model.response.PutStateBody
@@ -34,6 +35,7 @@ import org.springframework.web.bind.annotation.*
  *
  * @author Enaium
  */
+@SaIgnore
 @RestController
 @RequestMapping("/state/")
 class StateController(

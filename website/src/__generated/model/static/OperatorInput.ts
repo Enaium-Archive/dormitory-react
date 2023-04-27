@@ -1,6 +1,6 @@
 export interface OperatorInput {
     
-    readonly gender?: number;
+    readonly gender?: boolean;
     
     readonly id?: number;
     
@@ -10,7 +10,7 @@ export interface OperatorInput {
     
     readonly phone?: number;
     
-    readonly role?: number;
+    readonly roleId?: number;
     
     readonly username?: string;
 }

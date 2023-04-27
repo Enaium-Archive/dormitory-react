@@ -22,6 +22,7 @@
 
 package cn.enaium.dormitory.controller
 
+import cn.dev33.satoken.annotation.SaCheckRole
 import cn.enaium.dormitory.model.entity.Operator
 import cn.enaium.dormitory.model.entity.by
 import cn.enaium.dormitory.model.entity.input.OperatorInput
@@ -38,6 +39,7 @@ import org.springframework.web.bind.annotation.*
  *
  * @author Enaium
  */
+@SaCheckRole("system")
 @RestController
 @RequestMapping("/operator/")
 class OperatorController(

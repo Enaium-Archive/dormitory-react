@@ -4,6 +4,8 @@ export { BuildingController } from './BuildingController';
 export type { BuildingControllerOptions } from './BuildingController';
 export { DormitoryController } from './DormitoryController';
 export type { DormitoryControllerOptions } from './DormitoryController';
+export { MenuController } from './MenuController';
+export type { MenuControllerOptions } from './MenuController';
 export { MigrateController } from './MigrateController';
 export type { MigrateControllerOptions } from './MigrateController';
 export { OperatorController } from './OperatorController';

@@ -34,9 +34,9 @@ data class OperatorInput(
     val username: String?,
     val password: String?,
     val name: String?,
-    val gender: Int?,
+    val gender: Boolean?,
     val phone: Long?,
-    val role: Int?,
+    val roleId: Int?,
 ) : Input<Operator> {
 
     override fun toEntity(): Operator {

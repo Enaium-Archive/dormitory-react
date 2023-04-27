@@ -27,9 +27,15 @@ interface UserStore {
   token?: string
 }
 
+interface MenuStore {
+  menus: { label: string; key: string }[]
+}
+
 export const getUserStorage = () => JSON.parse(localStorage.getItem("user-store") ?? "{}") as UserStore
+const getMenuStorage = () => JSON.parse(localStorage.getItem("menu-store") ?? "{}") as MenuStore
 
 const userAtom = atom<UserStore>(getUserStorage())
+const menuAtom = atom<MenuStore>(getMenuStorage())
 
 export const userStore = atom(
   (get) => get(userAtom),
@@ -37,6 +43,16 @@ export const userStore = atom(
     localStorage.setItem("user-store", JSON.stringify(value))
     if (get(userAtom)) {
       set(userAtom, value)
+    }
+  },
+)
+
+export const menuStore = atom(
+  (get) => get(menuAtom),
+  (get, set, value: MenuStore) => {
+    localStorage.setItem("menu-store", JSON.stringify(value))
+    if (get(menuAtom)) {
+      set(menuAtom, value)
     }
   },
 )

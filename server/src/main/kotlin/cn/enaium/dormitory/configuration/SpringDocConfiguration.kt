@@ -22,8 +22,30 @@
 
 package cn.enaium.dormitory.configuration
 
+import io.swagger.v3.oas.models.Components
+import io.swagger.v3.oas.models.OpenAPI
+import io.swagger.v3.oas.models.info.Info
+import io.swagger.v3.oas.models.security.SecurityRequirement
+import io.swagger.v3.oas.models.security.SecurityScheme
+import io.swagger.v3.oas.models.security.SecurityScheme.In.HEADER
+import io.swagger.v3.oas.models.security.SecurityScheme.Type.APIKEY
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+
 /**
  * @author Enaium
  */
+@Configuration
 class SpringDocConfiguration {
+    @Bean
+    fun openAPI(): OpenAPI =
+        OpenAPI().info(Info().title("dormitory").version("1.0.0")).components(
+            Components().addSecuritySchemes(
+                "apiKeyScheme", SecurityScheme()
+                    .type(APIKEY)
+                    .`in`(HEADER)
+                    .name("token")
+            )
+        ).addSecurityItem(SecurityRequirement().addList("apiKeyScheme"))
+
 }

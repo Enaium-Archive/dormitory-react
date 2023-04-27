@@ -29,8 +29,8 @@ import { useImmer } from "use-immer"
 import { RequestOf } from "@/__generated"
 import React, { memo, useCallback } from "react"
 import { atom, useAtom, useSetAtom } from "jotai"
-import AbsentForm from "@/components/admin/AbsentForm.tsx"
-import AbsentSearchForm from "@/components/admin/AbsentSearchForm.tsx"
+import AbsentForm from "@/components/absent/AbsentForm.tsx"
+import AbsentSearchForm from "@/components/absent/AbsentSearchForm.tsx"
 
 const absentAtom = atom<AbsentDto["AbsentController/DEFAULT_FETCHER"] | null>(null)
 

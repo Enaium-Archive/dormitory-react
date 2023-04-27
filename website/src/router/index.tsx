@@ -22,9 +22,13 @@
 
 import { createBrowserRouter } from "react-router-dom"
 import Login from "@/pages/Login.tsx"
-import Admin from "@/layouts/Admin.tsx"
-import AbsentRecord from "@/pages/admin/AbsentRecord.tsx"
-import AbsentRegister from "@/pages/admin/AbsentRegister.tsx"
+import Manager from "@/layouts/Manager.tsx"
+import AbsentRecord from "@/pages/absent/AbsentRecord.tsx"
+import AbsentRegister from "@/pages/absent/AbsentRegister.tsx"
+import OperatorManager from "@/pages/AdminManager.tsx"
+import BuildingManager from "@/pages/BuildingManager.tsx"
+import MigrateManager from "@/pages/MigrateManager.tsx"
+import StudentManager from "@/pages/StudentManager.tsx"
 
 const router = createBrowserRouter([
   {
@@ -32,8 +36,8 @@ const router = createBrowserRouter([
     element: <Login />,
   },
   {
-    path: "/admin",
-    element: <Admin />,
+    path: "/manager",
+    element: <Manager />,
     children: [
       {
         path: "absent-record",
@@ -42,6 +46,22 @@ const router = createBrowserRouter([
       {
         path: "absent-register",
         element: <AbsentRegister />,
+      },
+      {
+        path: "operator-manager",
+        element: <OperatorManager />,
+      },
+      {
+        path: "building-manager",
+        element: <BuildingManager />,
+      },
+      {
+        path: "migrate-manager",
+        element: <MigrateManager />,
+      },
+      {
+        path: "student-manager",
+        element: <StudentManager />,
       },
     ],
   },

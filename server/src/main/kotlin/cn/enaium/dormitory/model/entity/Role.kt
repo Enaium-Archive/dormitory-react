@@ -32,4 +32,8 @@ interface Role {
     val id: Int
 
     val name: String
+
+    @ManyToMany
+    @JoinTable(name = "t_role_to_menu", joinColumnName = "role_id", inverseJoinColumnName = "menu_id")
+    val menus: List<Menu>
 }

@@ -20,8 +20,14 @@
  * SOFTWARE.
  */
 
-const System = () => {
-  return <div></div>
-}
+import React from 'react';
 
-export default System
+const StudentManager = () => {
+    return (
+        <div>
+            
+        </div>
+    );
+};
+
+export default StudentManager;

@@ -1,6 +1,6 @@
 import type { Executor } from './';
 
-import { AbsentController, BuildingController, DormitoryController, MigrateController, OperatorController, StateController, StudentController } from './services';
+import { AbsentController, BuildingController, DormitoryController, MenuController, MigrateController, OperatorController, StateController, StudentController } from './services';
 
 export class Api {
     
@@ -9,6 +9,8 @@ export class Api {
     readonly buildingController: BuildingController;
     
     readonly dormitoryController: DormitoryController;
+    
+    readonly menuController: MenuController;
     
     readonly migrateController: MigrateController;
     
@@ -22,6 +24,7 @@ export class Api {
         this.absentController = new AbsentController(executor);
         this.buildingController = new BuildingController(executor);
         this.dormitoryController = new DormitoryController(executor);
+        this.menuController = new MenuController(executor);
         this.migrateController = new MigrateController(executor);
         this.operatorController = new OperatorController(executor);
         this.stateController = new StateController(executor);

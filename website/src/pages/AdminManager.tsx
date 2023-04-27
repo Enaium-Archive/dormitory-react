@@ -20,17 +20,10 @@
  * SOFTWARE.
  */
 
-import { Card } from "antd"
-import AbsentForm from "@/components/admin/AbsentForm.tsx"
+import React from "react"
 
-const AbsentRegister = () => {
-  return (
-    <>
-      <Card title="缺勤登记">
-        <AbsentForm labelCol={{ span: 1 }} />
-      </Card>
-    </>
-  )
+const AdminManager = () => {
+  return <div></div>
 }
 
-export default AbsentRegister
+export default AdminManager

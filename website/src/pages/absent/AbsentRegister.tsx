@@ -20,27 +20,17 @@
  * SOFTWARE.
  */
 
-import { Layout } from "antd"
-import SideMenu from "@/components/admin/SideMenu.tsx"
-import { Outlet } from "react-router-dom"
+import { Card } from "antd"
+import AbsentForm from "@/components/absent/AbsentForm.tsx"
 
-const { Content, Sider } = Layout
-
-const Admin = () => {
+const AbsentRegister = () => {
   return (
     <>
-      <Layout className="vh-100">
-        <Sider>
-          <SideMenu />
-        </Sider>
-        <Layout>
-          <Content>
-            <Outlet />
-          </Content>
-        </Layout>
-      </Layout>
+      <Card title="缺勤登记">
+        <AbsentForm labelCol={{ span: 1 }} />
+      </Card>
     </>
   )
 }
 
-export default Admin
+export default AbsentRegister
