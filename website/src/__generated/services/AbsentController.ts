@@ -97,8 +97,8 @@ export class AbsentController {
 export type AbsentControllerOptions = {
     'delete': {readonly id: number},
     'get': {
-        readonly page: number, 
-        readonly size: number, 
+        readonly page?: number,
+        readonly size?: number,
         readonly absentInput?: AbsentInput
     },
     'put': {readonly body: AbsentInput}
