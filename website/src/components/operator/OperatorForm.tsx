@@ -38,6 +38,11 @@ const OperatorForm: React.FC<{
   })
 
   const onFinish = (values: any) => {
+    api.operatorController.put({
+      body: {
+        id: operator?.id,
+      },
+    })
     console.log(values)
     if (typeof onDone == "function") {
       onDone()

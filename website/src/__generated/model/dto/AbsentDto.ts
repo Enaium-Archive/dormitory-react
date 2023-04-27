@@ -31,7 +31,8 @@ export type AbsentDto = {
             readonly password: string, 
             readonly name: string, 
             readonly gender: boolean, 
-            readonly phone: number
+            readonly phone: number, 
+            readonly roleId: number
         }
     }
 }
