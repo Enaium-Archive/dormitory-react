@@ -64,6 +64,12 @@ class OperatorController(
         )
     }
 
+    @PutMapping
+    fun put(@RequestBody operatorInput: OperatorInput): ResponseBody<Nothing?> {
+        operatorRepository.save(operatorInput)
+        return ResponseBody.Builder.success()
+    }
+
     /**
      * 根据ID删除操作员
      *
