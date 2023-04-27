@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-import { Button, Form, Input, Radio, Select } from "antd"
+import { Button, Form, Input, message, Radio, Select } from "antd"
 import React, { memo } from "react"
 import { OperatorDto, RoleDto } from "@/__generated/model/dto"
 import { ColProps } from "antd/es/grid/col"
@@ -37,13 +37,31 @@ const OperatorForm: React.FC<{
     queryFn: () => api.roleController.get(),
   })
 
-  const onFinish = (values: any) => {
-    api.operatorController.put({
-      body: {
-        id: operator?.id,
-      },
-    })
-    console.log(values)
+  const onFinish = (values: {
+    username?: string
+    password?: string
+    name?: string
+    gender?: boolean
+    phone?: number
+    role?: number
+  }) => {
+    api.operatorController
+      .put({
+        body: {
+          id: operator?.id,
+          username: values?.username,
+          password: values?.password,
+          name: values?.name,
+          gender: values?.gender,
+          phone: values?.phone,
+          roleId: values.role,
+        },
+      })
+      .then((r) => {
+        if (r.code == 200) {
+          message.success("更新成功")
+        }
+      })
     if (typeof onDone == "function") {
       onDone()
     }
