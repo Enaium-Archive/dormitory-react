@@ -20,26 +20,67 @@
  * SOFTWARE.
  */
 
-import { Layout } from "antd"
+import { Button, Layout, message, Popconfirm } from "antd"
 import SideMenu from "@/components/SideMenu.tsx"
-import { Outlet } from "react-router-dom"
+import { Outlet, useNavigate } from "react-router-dom"
+import { api } from "@/common/ApiInstance.ts"
+import { useSetAtom } from "jotai"
+import { menuStore, userStore } from "@/store"
+import React from "react"
 
 const { Content, Sider } = Layout
 
 const Manager = () => {
+  const user = useSetAtom(userStore)
+  const menu = useSetAtom(menuStore)
+
+  const navigate = useNavigate()
+
+  const logout = () => {
+    api.stateController.delete().then((r) => {
+      if (r.code == 200) {
+        user({})
+        menu({ menus: [] })
+        navigate("/")
+        message.success("退出成功")
+      }
+    })
+  }
+
   return (
-    <>
-      <Layout className="vh-100">
-        <Sider>
+    <Layout hasSider>
+      <Sider
+        style={{
+          overflow: "auto",
+          position: "fixed",
+          height: "100vh",
+          background: "white",
+        }}
+      >
+        <div>
           <SideMenu />
-        </Sider>
-        <Layout>
-          <Content>
-            <Outlet />
-          </Content>
-        </Layout>
+          <Popconfirm
+            title="退出登录"
+            description="你确定要退出登录吗?"
+            onConfirm={logout}
+            onCancel={() => {
+              message.info("取消退出")
+            }}
+            okText="确认"
+            cancelText="取消"
+          >
+            <Button className="w-100" type="primary" danger>
+              退出
+            </Button>
+          </Popconfirm>
+        </div>
+      </Sider>
+      <Layout style={{ marginLeft: 200 }}>
+        <Content style={{ margin: "24px 16px 0", overflow: "initial" }}>
+          <Outlet />
+        </Content>
       </Layout>
-    </>
+    </Layout>
   )
 }
 

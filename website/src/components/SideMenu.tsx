@@ -24,7 +24,8 @@ import React from "react"
 import { Menu, MenuProps } from "antd"
 import { useLocation, useNavigate } from "react-router-dom"
 import { useAtom } from "jotai"
-import { menuStore } from "@/store"
+import { getUserStorage, menuStore } from "@/store"
+import { api } from "@/common/ApiInstance.ts"
 
 type MenuItem = Required<MenuProps>["items"][number]
 
@@ -44,21 +45,27 @@ function getItem(
   } as MenuItem
 }
 
-const items: MenuProps["items"] = [
-  getItem(
-    "菜单",
-    "absent",
-    null,
-    [getItem("缺勤记录", "absent-record"), getItem("缺勤登记", "absent-register")],
-    "group",
-  ),
-]
-
 const SideMenu = () => {
   const navigate = useNavigate()
   const location = useLocation()
-
+  let items: MenuProps["items"]
   const [menu, setMenu] = useAtom(menuStore)
+  const id = getUserStorage().id
+  if ((!menu.menus || menu.menus.length) == 0 && id) {
+    api.menuController.get({ operatorId: id }).then((r) => {
+      setMenu({ menus: r.metadata })
+    })
+  } else {
+    items = [
+      getItem(
+        "菜单",
+        "menu",
+        null,
+        menu.menus.map((item) => getItem(item.label, item.key)),
+        "group",
+      ),
+    ]
+  }
 
   const onClick: MenuProps["onClick"] = (e) => {
     navigate(e.key)
@@ -67,7 +74,6 @@ const SideMenu = () => {
   return (
     <Menu
       onClick={onClick}
-      className="vh-100"
       defaultSelectedKeys={[location.pathname.split("/")[2]]}
       mode="inline"
       items={items}

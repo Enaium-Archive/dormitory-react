@@ -26,14 +26,17 @@ import { api } from "@/common/ApiInstance.ts"
 import { userStore } from "@/store"
 import { useAtom } from "jotai"
 import { memo } from "react"
+import { useNavigate } from "react-router-dom"
 
 const Login = memo(() => {
   const [, setUser] = useAtom(userStore)
+  const navigate = useNavigate()
 
   const onFinish = (values: any) => {
     api.stateController.put({ body: values }).then((r) => {
       if (r.metadata) {
         setUser({ id: r.metadata.id, token: r.metadata.token })
+        navigate("/manager/absent-record")
         message.success("登录成功")
       } else {
         message.error(r.message)

@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-import { createBrowserRouter } from "react-router-dom"
+import { createBrowserRouter, Navigate } from "react-router-dom"
 import Login from "@/pages/Login.tsx"
 import Manager from "@/layouts/Manager.tsx"
 import AbsentRecord from "@/pages/absent/AbsentRecord.tsx"
@@ -32,13 +32,17 @@ import StudentManager from "@/pages/StudentManager.tsx"
 
 const router = createBrowserRouter([
   {
-    path: "/login",
+    path: "/",
     element: <Login />,
   },
   {
     path: "/manager",
     element: <Manager />,
     children: [
+      {
+        index: true,
+        element: <Navigate to={"absent-record"} />,
+      },
       {
         path: "absent-record",
         element: <AbsentRecord />,
