@@ -24,7 +24,7 @@ import { ColumnsType } from "antd/es/table"
 import { useQuery } from "react-query"
 import { api } from "@/common/ApiInstance.ts"
 import { Button, Card, message, Modal, Popconfirm, Table } from "antd"
-import {AbsentDto, BuildingDto, DormitoryDto, OperatorDto, StudentDto} from "@/__generated/model/dto"
+import { AbsentDto, BuildingDto, DormitoryDto, OperatorDto, StudentDto } from "@/__generated/model/dto"
 import { useImmer } from "use-immer"
 import { RequestOf } from "@/__generated"
 import React, { memo, useCallback } from "react"
@@ -116,12 +116,7 @@ const AbsentAction: React.FC<{ absent: AbsentDto["AbsentController/DEFAULT_FETCH
 }
 
 const AbsentRecord = memo(() => {
-  const [options, setOptions] = useImmer<RequestOf<typeof api.absentController.get>>(() => {
-    return {
-      page: 0,
-      size: 10,
-    }
-  })
+  const [options, setOptions] = useImmer<RequestOf<typeof api.absentController.get>>({})
 
   const { data } = useQuery({
     queryKey: ["AbsentRecord", options],

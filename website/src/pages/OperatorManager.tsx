@@ -116,12 +116,7 @@ const OperatorAction: React.FC<{ operator: OperatorDto["OperatorController/DEFAU
 )
 
 const OperatorManager = () => {
-  const [options, setOptions] = useImmer<RequestOf<typeof api.operatorController.get>>(() => {
-    return {
-      page: 0,
-      size: 10,
-    }
-  })
+  const [options, setOptions] = useImmer<RequestOf<typeof api.operatorController.get>>({})
 
   const { data } = useQuery({
     queryKey: ["OperatorManager", options],
