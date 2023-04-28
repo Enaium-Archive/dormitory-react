@@ -27,13 +27,7 @@ val springdoc: String by project
 val therapi: String by project
 
 dependencies {
-//    implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:$jimmer")
-    implementation(files("C:\\Users\\Enaium\\Projects\\jimmer\\project\\jimmer-spring-boot-starter\\build\\libs\\jimmer-spring-boot-starter-0.7.44.jar"))
-    implementation("org.babyfish.jimmer:jimmer-sql:$jimmer")
-    implementation("org.babyfish.jimmer:jimmer-sql-kotlin:$jimmer")
-    implementation("org.babyfish.jimmer:jimmer-client:$jimmer")
-    implementation("org.springframework.boot:spring-boot-starter-jdbc")
-    implementation("org.springframework.data:spring-data-commons")
+    implementation("org.babyfish.jimmer:jimmer-spring-boot-starter:$jimmer")
     ksp("org.babyfish.jimmer:jimmer-ksp:$jimmer")
     implementation("org.mapstruct:mapstruct:$mapstruct")
     kapt("org.mapstruct:mapstruct-processor:$mapstruct")
