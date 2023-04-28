@@ -58,7 +58,7 @@ class AbsentController(
     @GetMapping
     fun get(
         @RequestParam(defaultValue = "0") page: Int = 0,
-        @RequestParam(defaultValue = "1") size: Int = 10,
+        @RequestParam(defaultValue = "10") size: Int = 10,
         absentInput: AbsentInput?
     ): ResponseBody<Page<@FetchBy("DEFAULT_FETCHER") Absent>?> {
         return ResponseBody.Builder.success(

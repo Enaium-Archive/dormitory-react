@@ -44,7 +44,7 @@ class MigrateController(
     @GetMapping
     fun get(
         @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "1") size: Int
+        @RequestParam(defaultValue = "10") size: Int
     ): ResponseBody<Page<Migrate>?> {
         return ResponseBody.Builder.success(metadata = migrateRepository.findAll(page, size))
     }
