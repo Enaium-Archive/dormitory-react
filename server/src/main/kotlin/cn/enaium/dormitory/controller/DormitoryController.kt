@@ -89,6 +89,7 @@ class DormitoryController(
 
     companion object {
         val DEFAULT_FETCHER = newFetcher(Dormitory::class).by {
+            allScalarFields()
             building {
                 allScalarFields()
             }
