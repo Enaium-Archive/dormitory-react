@@ -32,8 +32,12 @@ interface Migrate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Int
 
+    val studentId: Int
+
     @ManyToOne
     val student: Student
+
+    val dormitoryId: Int
 
     @ManyToOne
     val dormitory: Dormitory

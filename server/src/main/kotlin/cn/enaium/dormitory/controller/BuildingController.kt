@@ -25,9 +25,12 @@ package cn.enaium.dormitory.controller
 import cn.dev33.satoken.annotation.SaCheckRole
 import cn.dev33.satoken.annotation.SaMode
 import cn.enaium.dormitory.model.entity.Building
+import cn.enaium.dormitory.model.entity.by
 import cn.enaium.dormitory.model.entity.input.BuildingInput
 import cn.enaium.dormitory.model.response.ResponseBody
 import cn.enaium.dormitory.repository.BuildingRepository
+import org.babyfish.jimmer.client.FetchBy
+import org.babyfish.jimmer.sql.kt.fetcher.newFetcher
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.*
@@ -55,7 +58,7 @@ class BuildingController(
         @RequestParam(defaultValue = "0") page: Int = 0,
         @RequestParam(defaultValue = "10") size: Int = 10,
         buildingInput: BuildingInput?
-    ): ResponseBody<Page<Building>?> {
+    ): ResponseBody<Page<@FetchBy("DEFAULT_FETCHER")Building>?> {
         return ResponseBody.Builder.success(
             metadata = buildingRepository.findAllByBuilding(
                 PageRequest.of(page, size),
@@ -80,5 +83,14 @@ class BuildingController(
     fun delete(@PathVariable id: Int): ResponseBody<Nothing?> {
         buildingRepository.deleteById(id)
         return ResponseBody.Builder.success()
+    }
+
+    companion object {
+        val DEFAULT_FETCHER = newFetcher(Building::class).by {
+            allScalarFields()
+            operator {
+                allScalarFields()
+            }
+        }
     }
 }

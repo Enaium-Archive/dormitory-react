@@ -22,6 +22,7 @@
 
 package cn.enaium.dormitory.repository
 
+import cn.enaium.dormitory.controller.StudentController.Companion.DEFAULT_FETCHER
 import cn.enaium.dormitory.model.entity.*
 import cn.enaium.dormitory.model.entity.input.StudentInput
 import org.babyfish.jimmer.spring.repository.KRepository
@@ -42,6 +43,6 @@ interface StudentRepository : KRepository<Student, Int> {
                 studentInput.dormitoryId?.let { where(table.dormitory.id eq it) }
                 studentInput.state?.takeIf { it.isNotEmpty() }?.let { where(table.state ilike it) }
             }
-            select(table)
+            select(table.fetch(DEFAULT_FETCHER))
         })
 }

@@ -23,9 +23,12 @@
 package cn.enaium.dormitory.controller
 
 import cn.enaium.dormitory.model.entity.Dormitory
+import cn.enaium.dormitory.model.entity.by
 import cn.enaium.dormitory.model.entity.input.DormitoryInput
 import cn.enaium.dormitory.model.response.ResponseBody
 import cn.enaium.dormitory.repository.DormitoryRepository
+import org.babyfish.jimmer.client.FetchBy
+import org.babyfish.jimmer.sql.kt.fetcher.newFetcher
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.*
@@ -53,7 +56,7 @@ class DormitoryController(
         @RequestParam(defaultValue = "0") page: Int = 0,
         @RequestParam(defaultValue = "10") size: Int = 10,
         dormitoryInput: DormitoryInput?
-    ): ResponseBody<Page<Dormitory>?> {
+    ): ResponseBody<Page<@FetchBy("DEFAULT_FETCHER") Dormitory>?> {
         return ResponseBody.Builder.success(
             metadata = dormitoryRepository.findAllByDormitory(
                 PageRequest.of(
@@ -82,5 +85,13 @@ class DormitoryController(
     fun delete(@PathVariable id: Int): ResponseBody<Nothing?> {
         dormitoryRepository.deleteById(id)
         return ResponseBody.Builder.success()
+    }
+
+    companion object {
+        val DEFAULT_FETCHER = newFetcher(Dormitory::class).by {
+            building {
+                allScalarFields()
+            }
+        }
     }
 }

@@ -24,9 +24,12 @@ package cn.enaium.dormitory.controller
 
 import cn.dev33.satoken.annotation.SaCheckRole
 import cn.enaium.dormitory.model.entity.Student
+import cn.enaium.dormitory.model.entity.by
 import cn.enaium.dormitory.model.entity.input.StudentInput
 import cn.enaium.dormitory.model.response.ResponseBody
 import cn.enaium.dormitory.repository.StudentRepository
+import org.babyfish.jimmer.client.FetchBy
+import org.babyfish.jimmer.sql.kt.fetcher.newFetcher
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.*
@@ -54,7 +57,7 @@ class StudentController(
         @RequestParam(defaultValue = "0") page: Int = 0,
         @RequestParam(defaultValue = "10") size: Int = 10,
         studentInput: StudentInput?
-    ): ResponseBody<Page<Student>?> {
+    ): ResponseBody<Page<@FetchBy("DEFAULT_FETCHER") Student>?> {
         return ResponseBody.Builder.success(
             metadata = studentRepository.findAllByStudent(
                 PageRequest.of(page, size),
@@ -79,5 +82,14 @@ class StudentController(
     fun delete(@PathVariable id: Int): ResponseBody<Nothing?> {
         studentRepository.deleteById(id)
         return ResponseBody.Builder.success()
+    }
+
+    companion object {
+        val DEFAULT_FETCHER = newFetcher(Student::class).by {
+            allScalarFields()
+            dormitory {
+                allScalarFields()
+            }
+        }
     }
 }

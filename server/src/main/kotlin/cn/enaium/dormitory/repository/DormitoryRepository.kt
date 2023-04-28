@@ -22,6 +22,7 @@
 
 package cn.enaium.dormitory.repository
 
+import cn.enaium.dormitory.controller.DormitoryController.Companion.DEFAULT_FETCHER
 import cn.enaium.dormitory.model.entity.*
 import cn.enaium.dormitory.model.entity.input.DormitoryInput
 import org.babyfish.jimmer.spring.repository.KRepository
@@ -43,6 +44,6 @@ interface DormitoryRepository : KRepository<Dormitory, Int> {
                 dormitoryInput.buildingId?.let { where(table.building.id eq it) }
             }
 
-            select(table)
+            select(table.fetch(DEFAULT_FETCHER))
         })
 }

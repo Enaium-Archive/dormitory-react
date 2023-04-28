@@ -22,8 +22,12 @@
 
 package cn.enaium.dormitory.repository
 
-import cn.enaium.dormitory.model.entity.*
+import cn.enaium.dormitory.controller.BuildingController.Companion.DEFAULT_FETCHER
+import cn.enaium.dormitory.model.entity.Building
+import cn.enaium.dormitory.model.entity.id
 import cn.enaium.dormitory.model.entity.input.BuildingInput
+import cn.enaium.dormitory.model.entity.name
+import cn.enaium.dormitory.model.entity.operator
 import org.babyfish.jimmer.spring.repository.KRepository
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.ilike
@@ -40,6 +44,6 @@ interface BuildingRepository : KRepository<Building, Int> {
                 buildingInput.name?.takeIf { it.isNotEmpty() }?.let { where(table.name ilike it) }
                 buildingInput.operatorId?.let { where(table.operator.id eq it) }
             }
-            select(table)
+            select(table.fetch(DEFAULT_FETCHER))
         })
 }

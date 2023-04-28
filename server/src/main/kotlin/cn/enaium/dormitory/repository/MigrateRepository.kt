@@ -22,9 +22,28 @@
 
 package cn.enaium.dormitory.repository
 
+import cn.enaium.dormitory.controller.MigrateController.Companion.DEFAULT_FETCHER
 import cn.enaium.dormitory.model.entity.Migrate
+import cn.enaium.dormitory.model.entity.dormitoryId
+import cn.enaium.dormitory.model.entity.input.MigrateInput
+import cn.enaium.dormitory.model.entity.reason
+import cn.enaium.dormitory.model.entity.studentId
 import org.babyfish.jimmer.spring.repository.KRepository
+import org.babyfish.jimmer.sql.kt.ast.expression.eq
+import org.babyfish.jimmer.sql.kt.ast.expression.ilike
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
 
 @Repository
-interface MigrateRepository : KRepository<Migrate,Int>
+interface MigrateRepository : KRepository<Migrate, Int> {
+    fun findAllByMigrate(pageable: Pageable, migrateInput: MigrateInput?): Page<Migrate> =
+        pager(pageable).execute(sql.createQuery(Migrate::class) {
+            if (migrateInput != null) {
+                migrateInput.studentId?.let { where(table.studentId eq it) }
+                migrateInput.dormitoryId?.let { where(table.dormitoryId eq it) }
+                migrateInput.reason?.takeIf { it.isNotEmpty() }?.let { where(table.reason ilike it) }
+            }
+            select(table.fetch(DEFAULT_FETCHER))
+        })
+}

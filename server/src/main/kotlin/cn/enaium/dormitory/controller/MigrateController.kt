@@ -24,10 +24,14 @@ package cn.enaium.dormitory.controller
 
 import cn.dev33.satoken.annotation.SaCheckRole
 import cn.enaium.dormitory.model.entity.Migrate
+import cn.enaium.dormitory.model.entity.by
 import cn.enaium.dormitory.model.entity.input.MigrateInput
 import cn.enaium.dormitory.model.response.ResponseBody
 import cn.enaium.dormitory.repository.MigrateRepository
+import org.babyfish.jimmer.client.FetchBy
+import org.babyfish.jimmer.sql.kt.fetcher.newFetcher
 import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -43,10 +47,16 @@ class MigrateController(
 ) {
     @GetMapping
     fun get(
-        @RequestParam(defaultValue = "0") page: Int,
-        @RequestParam(defaultValue = "10") size: Int
-    ): ResponseBody<Page<Migrate>?> {
-        return ResponseBody.Builder.success(metadata = migrateRepository.findAll(page, size))
+        @RequestParam(defaultValue = "0") page: Int = 0,
+        @RequestParam(defaultValue = "10") size: Int = 10,
+        migrateInput: MigrateInput?
+    ): ResponseBody<Page<@FetchBy("DEFAULT_FETCHER") Migrate>?> {
+        return ResponseBody.Builder.success(
+            metadata = migrateRepository.findAllByMigrate(
+                PageRequest.of(page, size),
+                migrateInput
+            )
+        )
     }
 
     @PutMapping
@@ -59,5 +69,17 @@ class MigrateController(
     fun delete(@PathVariable id: Int): ResponseBody<Nothing?> {
         migrateRepository.deleteById(id)
         return ResponseBody.Builder.success()
+    }
+
+    companion object {
+        val DEFAULT_FETCHER = newFetcher(Migrate::class).by {
+            allScalarFields()
+            student {
+                allScalarFields()
+            }
+            dormitory {
+                allScalarFields()
+            }
+        }
     }
 }

@@ -23,6 +23,7 @@
 package cn.enaium.dormitory.repository
 
 import cn.enaium.dormitory.controller.OperatorController
+import cn.enaium.dormitory.controller.OperatorController.Companion.DEFAULT_FETCHER
 import cn.enaium.dormitory.model.entity.*
 import cn.enaium.dormitory.model.entity.input.OperatorInput
 import org.babyfish.jimmer.spring.repository.KRepository
@@ -44,6 +45,6 @@ interface OperatorRepository : KRepository<Operator, Int> {
                 operatorInput.phone?.let { where(table.phone eq it) }
                 operatorInput.roleId?.let { where(table.roleId eq it) }
             }
-            select(table.fetch(OperatorController.DEFAULT_FETCHER))
+            select(table.fetch(DEFAULT_FETCHER))
         })
 }
