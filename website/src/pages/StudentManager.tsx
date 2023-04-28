@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import { Button, message, Popconfirm, Table } from "antd"
+import { Button, Card, message, Modal, Popconfirm, Table } from "antd"
 import { DormitoryDto, StudentDto } from "@/__generated/model/dto"
 import { useImmer } from "use-immer"
 import { RequestOf } from "@/__generated"
@@ -28,6 +28,8 @@ import { useQuery } from "react-query"
 import React, { memo, useCallback } from "react"
 import { atom, useAtom, useSetAtom } from "jotai"
 import { ColumnsType } from "antd/es/table"
+import StudentForm from "@/components/student/StudentForm.tsx"
+import { PlusOutlined } from "@ant-design/icons"
 
 const studentAtom = atom<StudentDto["StudentController/DEFAULT_FETCHER"] | null>(null)
 
@@ -137,17 +139,41 @@ const StudentManager = () => {
     ),
   }
 
-  const [student, setStudnet] = useAtom(studentAtom)
+  const [student, setStudent] = useAtom(studentAtom)
 
   return (
     <>
-      <Table
-        columns={columns}
-        dataSource={data?.metadata?.content}
-        pagination={pagination}
-        rowKey={(record: StudentDto["StudentController/DEFAULT_FETCHER"]) => record.id}
-        bordered
-      />
+      <Card title="搜索"></Card>
+      <Card
+        title={
+          <div className="d-flex justify-content-between">
+            <div>学生</div>
+            <Button
+              className="d-flex align-items-center"
+              icon={<PlusOutlined />}
+              type="primary"
+              onClick={() => {
+                setStudent({} as never)
+              }}
+            >
+              添加
+            </Button>
+          </div>
+        }
+      >
+        <Table
+          columns={columns}
+          dataSource={data?.metadata?.content}
+          pagination={pagination}
+          rowKey={(record: StudentDto["StudentController/DEFAULT_FETCHER"]) => record.id}
+          bordered
+        />
+      </Card>
+      <Modal open={student != null} width={600} footer={<></>} onCancel={() => setStudent(null)}>
+        <div className="m-3">
+          <StudentForm labelCol={{ span: 3 }} student={student} />
+        </div>
+      </Modal>
     </>
   )
 }

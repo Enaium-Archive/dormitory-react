@@ -2,7 +2,8 @@ export type OperatorDto = {
     'OperatorController/DEFAULT_FETCHER': {
         readonly id: number, 
         readonly username: string, 
-        readonly name: string, 
+        readonly password: string,
+        readonly name: string,
         readonly gender: boolean, 
         readonly phone: number, 
         readonly roleId: number, 

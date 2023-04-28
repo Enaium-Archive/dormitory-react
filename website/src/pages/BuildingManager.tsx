@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import { Button, message, Popconfirm, Table } from "antd"
+import { Button, Card, message, Modal, Popconfirm, Table } from "antd"
 import { BuildingDto, OperatorDto } from "@/__generated/model/dto"
 import { useImmer } from "use-immer"
 import { RequestOf } from "@/__generated"
@@ -28,6 +28,9 @@ import { useQuery } from "react-query"
 import React, { memo, useCallback } from "react"
 import { atom, useAtom, useSetAtom } from "jotai"
 import { ColumnsType } from "antd/es/table"
+import BuildingSearchForm from "@/components/building/BuildingSearchForm.tsx"
+import BuildingForm from "@/components/building/BuildingForm.tsx"
+import { PlusOutlined } from "@ant-design/icons"
 
 const buildingAtom = atom<BuildingDto["BuildingController/DEFAULT_FETCHER"] | null>(null)
 
@@ -116,17 +119,55 @@ const BuildingManager = () => {
     ),
   }
 
+  const onSearch = useCallback(
+    (values: BuildingDto["BuildingController/DEFAULT_FETCHER"]) => {
+      setOptions((draft) => {
+        draft.buildingInput = {
+          name: values.name,
+          operatorId: values.operator?.id,
+        }
+      })
+    },
+    [setOptions],
+  )
+
   const [building, setBuilding] = useAtom(buildingAtom)
 
   return (
     <>
-      <Table
-        columns={columns}
-        dataSource={data?.metadata?.content}
-        pagination={pagination}
-        rowKey={(record: BuildingDto["BuildingController/DEFAULT_FETCHER"]) => record.id}
-        bordered
-      />
+      <Card title="搜索">
+        <BuildingSearchForm onFinish={onSearch} />
+      </Card>
+      <Card
+        title={
+          <div className="d-flex justify-content-between">
+            <div>宿舍楼</div>
+            <Button
+              className="d-flex align-items-center"
+              icon={<PlusOutlined />}
+              type="primary"
+              onClick={() => {
+                setBuilding({} as never)
+              }}
+            >
+              添加
+            </Button>
+          </div>
+        }
+      >
+        <Table
+          columns={columns}
+          dataSource={data?.metadata?.content}
+          pagination={pagination}
+          rowKey={(record: BuildingDto["BuildingController/DEFAULT_FETCHER"]) => record.id}
+          bordered
+        />
+      </Card>
+      <Modal open={building != null} width={600} footer={<></>} onCancel={() => setBuilding(null)}>
+        <div className="m-3">
+          <BuildingForm labelCol={{ span: 3 }} building={building} />
+        </div>
+      </Modal>
     </>
   )
 }

@@ -85,7 +85,6 @@ class OperatorController(
     companion object {
         val DEFAULT_FETCHER = newFetcher(Operator::class).by {
             allScalarFields()
-            password(false)
             role {
                 allScalarFields()
             }

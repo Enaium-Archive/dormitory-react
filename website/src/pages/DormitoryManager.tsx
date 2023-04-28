@@ -19,7 +19,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import { Button, message, Popconfirm, Table } from "antd"
+import { Button, Card, message, Modal, Popconfirm, Table } from "antd"
 import { BuildingDto, DormitoryDto } from "@/__generated/model/dto"
 import { useImmer } from "use-immer"
 import { RequestOf } from "@/__generated"
@@ -28,6 +28,9 @@ import { useQuery } from "react-query"
 import React, { memo, useCallback } from "react"
 import { atom, useAtom, useSetAtom } from "jotai"
 import { ColumnsType } from "antd/es/table"
+import DormitoryForm from "@/components/dormitory/DormitoryForm.tsx"
+import DormitorySearchForm from "@/components/dormitory/DormitorySearchForm.tsx"
+import { PlusOutlined } from "@ant-design/icons"
 
 const dormitoryAtom = atom<DormitoryDto["DormitoryController/DEFAULT_FETCHER"] | null>(null)
 
@@ -126,17 +129,57 @@ const DormitoryManager = () => {
     ),
   }
 
+  const onSearch = useCallback(
+    (values: DormitoryDto["DormitoryController/DEFAULT_FETCHER"]) => {
+      setOptions((draft) => {
+        draft.dormitoryInput = {
+          buildingId: values?.building?.id,
+          name: values?.name,
+          type: values?.type,
+          telephone: values?.telephone,
+        }
+      })
+    },
+    [setOptions],
+  )
+
   const [dormitory, setDormitory] = useAtom(dormitoryAtom)
 
   return (
     <>
-      <Table
-        columns={columns}
-        dataSource={data?.metadata?.content}
-        pagination={pagination}
-        rowKey={(record: DormitoryDto["DormitoryController/DEFAULT_FETCHER"]) => record.id}
-        bordered
-      />
+      <Card title="搜索">
+        <DormitorySearchForm onFinish={onSearch} />
+      </Card>
+      <Card
+        title={
+          <div className="d-flex justify-content-between">
+            <div>宿舍</div>
+            <Button
+              className="d-flex align-items-center"
+              icon={<PlusOutlined />}
+              type="primary"
+              onClick={() => {
+                setDormitory({} as never)
+              }}
+            >
+              添加
+            </Button>
+          </div>
+        }
+      >
+        <Table
+          columns={columns}
+          dataSource={data?.metadata?.content}
+          pagination={pagination}
+          rowKey={(record: DormitoryDto["DormitoryController/DEFAULT_FETCHER"]) => record.id}
+          bordered
+        />
+      </Card>
+      <Modal open={dormitory != null} width={600} footer={<></>} onCancel={() => setDormitory(null)}>
+        <div className="m-3">
+          <DormitoryForm labelCol={{ span: 3 }} dormitory={dormitory} />
+        </div>
+      </Modal>
     </>
   )
 }

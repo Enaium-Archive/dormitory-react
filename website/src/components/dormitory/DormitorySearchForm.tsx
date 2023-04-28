@@ -23,55 +23,53 @@
 import { Button, Col, Form, FormProps, Input, Radio, Row, Select } from "antd"
 import { useQuery } from "react-query"
 import { api } from "@/common/ApiInstance.ts"
-import { RoleDto } from "@/__generated/model/dto"
 import { SearchOutlined } from "@ant-design/icons"
 import { memo } from "react"
+import { BuildingDto } from "@/__generated/model/dto"
 
-const OperatorSearchForm = memo(({ ...props }: FormProps) => {
+const DormitorySearchForm = memo(({ ...props }: FormProps) => {
   const { data } = useQuery({
-    queryKey: ["OperatorSearchForm"],
-    queryFn: () => api.roleController.get(),
+    queryKey: ["DormitorySearchForm"],
+    queryFn: () => api.buildingController.get({}),
   })
 
   return (
     <>
       <Form {...props}>
         <Row gutter={16}>
-          <Col span={4}>
-            <Form.Item name="username" label="用户名">
-              <Input placeholder={"请输入用户名"} allowClear />
-            </Form.Item>
-          </Col>
-          <Col span={4}>
-            <Form.Item name="name" label="姓名">
-              <Input placeholder={"请输入姓名"} allowClear />
-            </Form.Item>
-          </Col>
-          <Col span={4}>
-            <Form.Item name="gender" label="性别">
-              <Radio.Group className="d-flex justify-content-between">
-                <Radio value={false}>女</Radio>
-                <Radio value={true}>男</Radio>
-              </Radio.Group>
-            </Form.Item>
-          </Col>
-          <Col span={4}>
-            <Form.Item name="phone" label="电话">
-              <Input placeholder={"请输入电话"} allowClear />
-            </Form.Item>
-          </Col>
-          <Col span={4}>
-            <Form.Item name={["role", "id"]} label="角色">
+          <Col span={5}>
+            <Form.Item name={["building", "id"]} label="宿舍楼">
               <Select
                 className="w-100"
                 style={{ width: 120 }}
-                placeholder="请选择角色"
-                options={data?.metadata?.map((item: RoleDto["DEFAULT"]) => ({
+                placeholder="请选择宿舍楼"
+                options={data?.metadata?.content.map((item: BuildingDto["BuildingController/DEFAULT_FETCHER"]) => ({
                   label: item.name,
                   value: item.id,
                 }))}
                 allowClear
               />
+            </Form.Item>
+          </Col>
+          <Col span={5}>
+            <Form.Item name="name" label="名称">
+              <Input placeholder="请输入名称" allowClear/>
+            </Form.Item>
+          </Col>
+          <Col span={5}>
+            <Form.Item name="type" label="类型">
+              <Radio.Group className="d-flex justify-content-between">
+                <Radio value={4}>4</Radio>
+                <Radio value={5}>5</Radio>
+                <Radio value={6}>6</Radio>
+                <Radio value={7}>7</Radio>
+                <Radio value={8}>8</Radio>
+              </Radio.Group>
+            </Form.Item>
+          </Col>
+          <Col span={5}>
+            <Form.Item name="telephone" label="电话">
+              <Input placeholder="请输入电话" allowClear/>
             </Form.Item>
           </Col>
           <Col span={4}>
@@ -90,4 +88,4 @@ const OperatorSearchForm = memo(({ ...props }: FormProps) => {
   )
 })
 
-export default OperatorSearchForm
+export default DormitorySearchForm

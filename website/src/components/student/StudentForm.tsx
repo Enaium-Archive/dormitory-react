@@ -20,34 +20,35 @@
  * SOFTWARE.
  */
 
-import { Button, Form, Input, message, Radio, Select } from "antd"
+import { Button, Form, Input, message, Radio } from "antd"
 import React, { memo } from "react"
-import { OperatorDto, RoleDto } from "@/__generated/model/dto"
+import { DormitoryDto, StudentDto } from "@/__generated/model/dto"
 import { ColProps } from "antd/es/grid/col"
-import { useQuery } from "react-query"
 import { api } from "@/common/ApiInstance.ts"
+import DebounceSelect from "@/components/DebounceSelect.tsx"
 
-const OperatorForm: React.FC<{
-  operator?: OperatorDto["OperatorController/DEFAULT_FETCHER"] | null
+const fetchDormitory = async (
+  name: string,
+): Promise<ReadonlyArray<DormitoryDto["DormitoryController/DEFAULT_FETCHER"]>> => {
+  return (await api.dormitoryController.get({ dormitoryInput: { name: name } })).metadata?.content ?? []
+}
+
+const StudentForm: React.FC<{
+  student?: StudentDto["StudentController/DEFAULT_FETCHER"] | null
   onDone?: () => void
   labelCol?: ColProps
-}> = memo(({ operator, onDone, labelCol }) => {
-  const { data } = useQuery({
-    queryKey: ["OperatorForm"],
-    queryFn: () => api.roleController.get(),
-  })
-
-  const onFinish = (values: OperatorDto["OperatorController/DEFAULT_FETCHER"]) => {
-    api.operatorController
+}> = memo(({ student, onDone, labelCol }) => {
+  const onFinish = (values: StudentDto["StudentController/DEFAULT_FETCHER"]) => {
+    api.studentController
       .put({
         body: {
-          id: operator?.id,
-          username: values?.username,
-          password: values?.password,
+          id: student?.id,
+          number: values?.number,
           name: values?.name,
           gender: values?.gender,
-          phone: values?.phone,
-          roleId: values?.role?.id,
+          dormitoryId: values?.dormitory?.id,
+          state: values?.state,
+          createDate: values?.createDate,
         },
       })
       .then((r) => {
@@ -62,15 +63,12 @@ const OperatorForm: React.FC<{
 
   return (
     <>
-      <Form onFinish={onFinish} labelCol={labelCol} initialValues={{ ...operator }}>
-        <Form.Item name="username" label="用户名" rules={[{ required: true, message: "请输入用户名!" }]}>
-          <Input placeholder={operator?.username ?? "请输入用户名"} />
+      <Form onFinish={onFinish} labelCol={labelCol} initialValues={{ ...student }}>
+        <Form.Item name="number" label="学号" rules={[{ required: true, message: "请输入学号!" }]}>
+          <Input placeholder={student?.number ?? "请输入学号"} />
         </Form.Item>
-        <Form.Item name="password" label="密码" rules={[{ required: true, message: "请输入密码!" }]}>
-          <Input.Password placeholder={"请输入密码"} />
-        </Form.Item>
-        <Form.Item name="name" label="姓名" rules={[{ required: true, message: "请输入姓名!" }]}>
-          <Input placeholder={operator?.name ?? "请输入姓名"} />
+        <Form.Item name="name" label="名称" rules={[{ required: true, message: "请输入姓名!" }]}>
+          <Input placeholder={student?.name ?? "请输入姓名"} />
         </Form.Item>
         <Form.Item name="gender" label="性别" rules={[{ required: true, message: "请选择性别!" }]}>
           <Radio.Group className="d-flex justify-content-between">
@@ -78,19 +76,15 @@ const OperatorForm: React.FC<{
             <Radio value={true}>男</Radio>
           </Radio.Group>
         </Form.Item>
-        <Form.Item name="phone" label="电话" rules={[{ required: true, message: "请输入电话!" }]}>
-          <Input placeholder={`${operator?.phone ?? "请输入电话"}`} />
-        </Form.Item>
-        <Form.Item name={["role", "id"]} label="角色" rules={[{ required: true, message: "请选择角色!" }]}>
-          <Select
-            className="w-100"
-            style={{ width: 120 }}
-            placeholder={operator?.role?.name ?? "请选择角色"}
-            options={data?.metadata?.map((item: RoleDto["DEFAULT"]) => ({
-              label: item.name,
-              value: item.id,
-            }))}
+        <Form.Item name={["dormitory", "id"]} label="宿舍" rules={[{ required: true, message: "请选择宿舍!" }]}>
+          <DebounceSelect
+            showSearch
+            placeholder={student?.dormitory?.name ?? "请选择宿舍"}
+            fetchOptions={fetchDormitory}
           />
+        </Form.Item>
+        <Form.Item name="state" label="状态" rules={[{ required: true, message: "请输入状态!" }]}>
+          <Input placeholder={student?.name ?? "请输入状态"} />
         </Form.Item>
         <Button className="w-100" type="primary" htmlType="submit">
           提交
@@ -100,4 +94,4 @@ const OperatorForm: React.FC<{
   )
 })
 
-export default OperatorForm
+export default StudentForm

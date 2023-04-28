@@ -141,14 +141,14 @@ const OperatorManager = () => {
   }
 
   const onSearch = useCallback(
-    (values: { username?: string; name?: string; gender?: number; phone?: number; role?: { value: number } }) => {
+    (values: OperatorDto["OperatorController/DEFAULT_FETCHER"]) => {
       setOptions((draft) => {
         draft.operatorInput = {
           username: values?.username,
           name: values?.name,
           gender: values?.gender,
           phone: values?.phone,
-          roleId: values?.role?.value,
+          roleId: values?.role?.id,
         }
       })
     },

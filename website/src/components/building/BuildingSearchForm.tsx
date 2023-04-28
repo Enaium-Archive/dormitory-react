@@ -20,53 +20,35 @@
  * SOFTWARE.
  */
 
-import { Button, Col, Form, FormProps, Input, Radio, Row, Select } from "antd"
+import { Button, Col, Form, FormProps, Input, Row, Select } from "antd"
 import { useQuery } from "react-query"
 import { api } from "@/common/ApiInstance.ts"
-import { RoleDto } from "@/__generated/model/dto"
+import { OperatorDto } from "@/__generated/model/dto"
 import { SearchOutlined } from "@ant-design/icons"
 import { memo } from "react"
 
-const OperatorSearchForm = memo(({ ...props }: FormProps) => {
+const BuildingSearchForm = memo(({ ...props }: FormProps) => {
   const { data } = useQuery({
-    queryKey: ["OperatorSearchForm"],
-    queryFn: () => api.roleController.get(),
+    queryKey: ["BuildingSearchForm"],
+    queryFn: () => api.operatorController.get({}),
   })
 
   return (
     <>
       <Form {...props}>
         <Row gutter={16}>
-          <Col span={4}>
-            <Form.Item name="username" label="用户名">
-              <Input placeholder={"请输入用户名"} allowClear />
+          <Col span={8}>
+            <Form.Item name="name" label="名称">
+              <Input placeholder={"请输入名称"} allowClear />
             </Form.Item>
           </Col>
-          <Col span={4}>
-            <Form.Item name="name" label="姓名">
-              <Input placeholder={"请输入姓名"} allowClear />
-            </Form.Item>
-          </Col>
-          <Col span={4}>
-            <Form.Item name="gender" label="性别">
-              <Radio.Group className="d-flex justify-content-between">
-                <Radio value={false}>女</Radio>
-                <Radio value={true}>男</Radio>
-              </Radio.Group>
-            </Form.Item>
-          </Col>
-          <Col span={4}>
-            <Form.Item name="phone" label="电话">
-              <Input placeholder={"请输入电话"} allowClear />
-            </Form.Item>
-          </Col>
-          <Col span={4}>
-            <Form.Item name={["role", "id"]} label="角色">
+          <Col span={8}>
+            <Form.Item name={["operator", "id"]} label="操作员">
               <Select
                 className="w-100"
                 style={{ width: 120 }}
-                placeholder="请选择角色"
-                options={data?.metadata?.map((item: RoleDto["DEFAULT"]) => ({
+                placeholder="请选择操作员"
+                options={data?.metadata?.content.map((item: OperatorDto["OperatorController/DEFAULT_FETCHER"]) => ({
                   label: item.name,
                   value: item.id,
                 }))}
@@ -74,7 +56,7 @@ const OperatorSearchForm = memo(({ ...props }: FormProps) => {
               />
             </Form.Item>
           </Col>
-          <Col span={4}>
+          <Col span={8}>
             <Button
               className="w-100 d-flex justify-content-center align-items-center"
               type="primary"
@@ -90,4 +72,4 @@ const OperatorSearchForm = memo(({ ...props }: FormProps) => {
   )
 })
 
-export default OperatorSearchForm
+export default BuildingSearchForm

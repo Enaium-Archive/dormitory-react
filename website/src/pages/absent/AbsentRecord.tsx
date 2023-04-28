@@ -44,19 +44,19 @@ const columns: ColumnsType<AbsentDto["AbsentController/DEFAULT_FETCHER"]> = [
     title: "宿舍楼",
     dataIndex: "building",
     key: "building",
-    render: (building?: BuildingDto["DEFAULT"]) => <div>{building?.name}</div>,
+    render: (building?: BuildingDto["BuildingController/DEFAULT_FETCHER"]) => <div>{building?.name}</div>,
   },
   {
     title: "宿舍",
     dataIndex: "dormitory",
     key: "dormitory",
-    render: (dormitory?: DormitoryDto["DEFAULT"]) => <div>{dormitory?.name}</div>,
+    render: (dormitory?: DormitoryDto["DormitoryController/DEFAULT_FETCHER"]) => <div>{dormitory?.name}</div>,
   },
   {
     title: "学生",
     dataIndex: "student",
     key: "student",
-    render: (student?: StudentDto["DEFAULT"]) => <div>{student?.name}</div>,
+    render: (student?: StudentDto["StudentController/DEFAULT_FETCHER"]) => <div>{student?.name}</div>,
   },
   {
     title: "操作员",
@@ -141,22 +141,16 @@ const AbsentRecord = memo(() => {
   }
 
   const onSearch = useCallback(
-    (values: {
-      building?: { value: number }
-      dormitory?: { value: number }
-      student?: { value: number }
-      operator?: { value: number }
-      createDate?: { $d: Date }
-      reason?: { value: string }
-    }) => {
+    (values: AbsentDto["AbsentController/DEFAULT_FETCHER"]) => {
+      console.log(values)
       setOptions((draft) => {
         draft.absentInput = {
-          buildingId: values?.building?.value,
-          dormitoryId: values?.dormitory?.value,
-          studentId: values?.student?.value,
-          operatorId: values?.operator?.value,
-          createDate: values?.createDate?.$d.getTime().toString(),
-          reason: values?.reason?.value,
+          buildingId: values?.building?.id,
+          dormitoryId: values?.dormitory?.id,
+          studentId: values?.student?.id,
+          operatorId: values?.operator?.id,
+          createDate: values?.createDate ? new Date(values?.createDate).toISOString() : undefined,
+          reason: values?.reason,
         }
       })
     },
@@ -170,13 +164,15 @@ const AbsentRecord = memo(() => {
       <Card title="搜索">
         <AbsentSearchForm onFinish={onSearch} />
       </Card>
-      <Table
-        columns={columns}
-        dataSource={data?.metadata?.content}
-        pagination={pagination}
-        rowKey={(record: AbsentDto["AbsentController/DEFAULT_FETCHER"]) => record.id}
-        bordered
-      />
+      <Card title="缺勤">
+        <Table
+            columns={columns}
+            dataSource={data?.metadata?.content}
+            pagination={pagination}
+            rowKey={(record: AbsentDto["AbsentController/DEFAULT_FETCHER"]) => record.id}
+            bordered
+        />
+      </Card>
       <Modal open={absent != null} width={600} footer={<></>} onCancel={() => setAbsent(null)}>
         <div className="m-3">
           <AbsentForm labelCol={{ span: 3 }} absent={absent} />

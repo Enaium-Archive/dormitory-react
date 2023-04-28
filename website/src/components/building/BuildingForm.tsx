@@ -20,34 +20,30 @@
  * SOFTWARE.
  */
 
-import { Button, Form, Input, message, Radio, Select } from "antd"
+import { Button, Form, Input, message, Select } from "antd"
 import React, { memo } from "react"
-import { OperatorDto, RoleDto } from "@/__generated/model/dto"
+import { BuildingDto, OperatorDto } from "@/__generated/model/dto"
 import { ColProps } from "antd/es/grid/col"
 import { useQuery } from "react-query"
 import { api } from "@/common/ApiInstance.ts"
 
-const OperatorForm: React.FC<{
-  operator?: OperatorDto["OperatorController/DEFAULT_FETCHER"] | null
+const BuildingForm: React.FC<{
+  building?: BuildingDto["BuildingController/DEFAULT_FETCHER"] | null
   onDone?: () => void
   labelCol?: ColProps
-}> = memo(({ operator, onDone, labelCol }) => {
+}> = memo(({ building, onDone, labelCol }) => {
   const { data } = useQuery({
-    queryKey: ["OperatorForm"],
-    queryFn: () => api.roleController.get(),
+    queryKey: ["BuildingForm"],
+    queryFn: () => api.operatorController.get({}),
   })
 
-  const onFinish = (values: OperatorDto["OperatorController/DEFAULT_FETCHER"]) => {
-    api.operatorController
+  const onFinish = (values: BuildingDto["BuildingController/DEFAULT_FETCHER"]) => {
+    api.buildingController
       .put({
         body: {
-          id: operator?.id,
-          username: values?.username,
-          password: values?.password,
+          id: building?.id,
           name: values?.name,
-          gender: values?.gender,
-          phone: values?.phone,
-          roleId: values?.role?.id,
+          operatorId: values?.operator?.id,
         },
       })
       .then((r) => {
@@ -62,31 +58,16 @@ const OperatorForm: React.FC<{
 
   return (
     <>
-      <Form onFinish={onFinish} labelCol={labelCol} initialValues={{ ...operator }}>
-        <Form.Item name="username" label="用户名" rules={[{ required: true, message: "请输入用户名!" }]}>
-          <Input placeholder={operator?.username ?? "请输入用户名"} />
-        </Form.Item>
-        <Form.Item name="password" label="密码" rules={[{ required: true, message: "请输入密码!" }]}>
-          <Input.Password placeholder={"请输入密码"} />
-        </Form.Item>
-        <Form.Item name="name" label="姓名" rules={[{ required: true, message: "请输入姓名!" }]}>
-          <Input placeholder={operator?.name ?? "请输入姓名"} />
-        </Form.Item>
-        <Form.Item name="gender" label="性别" rules={[{ required: true, message: "请选择性别!" }]}>
-          <Radio.Group className="d-flex justify-content-between">
-            <Radio value={false}>女</Radio>
-            <Radio value={true}>男</Radio>
-          </Radio.Group>
-        </Form.Item>
-        <Form.Item name="phone" label="电话" rules={[{ required: true, message: "请输入电话!" }]}>
-          <Input placeholder={`${operator?.phone ?? "请输入电话"}`} />
+      <Form onFinish={onFinish} labelCol={labelCol} initialValues={{ ...building }}>
+        <Form.Item name="name" label="名称" rules={[{ required: true, message: "请输入名称!" }]}>
+          <Input placeholder={building?.name ?? "请输入名称"} />
         </Form.Item>
         <Form.Item name={["role", "id"]} label="角色" rules={[{ required: true, message: "请选择角色!" }]}>
           <Select
             className="w-100"
             style={{ width: 120 }}
-            placeholder={operator?.role?.name ?? "请选择角色"}
-            options={data?.metadata?.map((item: RoleDto["DEFAULT"]) => ({
+            placeholder={building?.operator?.name ?? "请选择操作员"}
+            options={data?.metadata?.content.map((item: OperatorDto["OperatorController/DEFAULT_FETCHER"]) => ({
               label: item.name,
               value: item.id,
             }))}
@@ -100,4 +81,4 @@ const OperatorForm: React.FC<{
   )
 })
 
-export default OperatorForm
+export default BuildingForm
