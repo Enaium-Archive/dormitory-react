@@ -1,9 +1,9 @@
 export type DormitoryDto = {
-    'DEFAULT': {
+    'DormitoryController/DEFAULT_FETCHER': {
         readonly id: number, 
-        readonly building: {readonly id: number}, 
-        readonly name: string, 
-        readonly type: number, 
-        readonly telephone: string
+        readonly building: {
+            readonly id: number, 
+            readonly name: string
+        }
     }
 }

@@ -15,7 +15,7 @@ export class BuildingController {
     }
     
     async get(options: BuildingControllerOptions['get']): Promise<
-        ResponseBody<Page<BuildingDto['DEFAULT']> | undefined>
+        ResponseBody<Page<BuildingDto['BuildingController/DEFAULT_FETCHER']> | undefined>
     > {
         let _uri = '/building/';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
@@ -55,7 +55,7 @@ export class BuildingController {
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }
-        return (await this.executor({uri: _uri, method: 'GET'})) as ResponseBody<Page<BuildingDto['DEFAULT']> | undefined>
+        return (await this.executor({uri: _uri, method: 'GET'})) as ResponseBody<Page<BuildingDto['BuildingController/DEFAULT_FETCHER']> | undefined>
     }
     
     async put(options: BuildingControllerOptions['put']): Promise<

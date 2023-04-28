@@ -15,7 +15,7 @@ export class DormitoryController {
     }
     
     async get(options: DormitoryControllerOptions['get']): Promise<
-        ResponseBody<Page<DormitoryDto['DEFAULT']> | undefined>
+        ResponseBody<Page<DormitoryDto['DormitoryController/DEFAULT_FETCHER']> | undefined>
     > {
         let _uri = '/dormitory/';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
@@ -69,7 +69,7 @@ export class DormitoryController {
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }
-        return (await this.executor({uri: _uri, method: 'GET'})) as ResponseBody<Page<DormitoryDto['DEFAULT']> | undefined>
+        return (await this.executor({uri: _uri, method: 'GET'})) as ResponseBody<Page<DormitoryDto['DormitoryController/DEFAULT_FETCHER']> | undefined>
     }
     
     async put(options: DormitoryControllerOptions['put']): Promise<

@@ -15,11 +15,46 @@ export class MigrateController {
     }
     
     async get(options: MigrateControllerOptions['get']): Promise<
-        ResponseBody<Page<MigrateDto['DEFAULT']> | undefined>
+        ResponseBody<Page<MigrateDto['MigrateController/DEFAULT_FETCHER']> | undefined>
     > {
         let _uri = '/migrate/';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
         let _value: any = undefined;
+        _value = options.migrateInput?.createDate;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'createDate='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        _value = options.migrateInput?.dormitoryId;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'dormitoryId='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        _value = options.migrateInput?.id;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'id='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        _value = options.migrateInput?.reason;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'reason='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
+        _value = options.migrateInput?.studentId;
+        if (_value !== undefined && _value !== null) {
+            _uri += _separator
+            _uri += 'studentId='
+            _uri += encodeURIComponent(_value);
+            _separator = '&';
+        }
         _value = options.page;
         if (_value !== undefined && _value !== null) {
             _uri += _separator
@@ -34,7 +69,7 @@ export class MigrateController {
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }
-        return (await this.executor({uri: _uri, method: 'GET'})) as ResponseBody<Page<MigrateDto['DEFAULT']> | undefined>
+        return (await this.executor({uri: _uri, method: 'GET'})) as ResponseBody<Page<MigrateDto['MigrateController/DEFAULT_FETCHER']> | undefined>
     }
     
     async put(options: MigrateControllerOptions['put']): Promise<
@@ -47,6 +82,10 @@ export class MigrateController {
 
 export type MigrateControllerOptions = {
     'delete': {readonly id: number},
-    'get': {readonly page: number, readonly size: number},
+    'get': {
+        readonly page?: number,
+        readonly size?: number,
+        readonly migrateInput?: MigrateInput
+    },
     'put': {readonly body: MigrateInput}
 }

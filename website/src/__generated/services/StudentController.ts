@@ -15,7 +15,7 @@ export class StudentController {
     }
     
     async get(options: StudentControllerOptions['get']): Promise<
-        ResponseBody<Page<StudentDto['DEFAULT']> | undefined>
+        ResponseBody<Page<StudentDto['StudentController/DEFAULT_FETCHER']> | undefined>
     > {
         let _uri = '/student/';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
@@ -83,7 +83,7 @@ export class StudentController {
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }
-        return (await this.executor({uri: _uri, method: 'GET'})) as ResponseBody<Page<StudentDto['DEFAULT']> | undefined>
+        return (await this.executor({uri: _uri, method: 'GET'})) as ResponseBody<Page<StudentDto['StudentController/DEFAULT_FETCHER']> | undefined>
     }
     
     async put(options: StudentControllerOptions['put']): Promise<

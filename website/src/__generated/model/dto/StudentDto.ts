@@ -1,11 +1,16 @@
 export type StudentDto = {
-    'DEFAULT': {
+    'StudentController/DEFAULT_FETCHER': {
         readonly id: number, 
         readonly number: string, 
         readonly name: string, 
         readonly gender: boolean, 
-        readonly dormitory: {readonly id: number}, 
         readonly state: string, 
-        readonly createDate: string
+        readonly createDate: string, 
+        readonly dormitory: {
+            readonly id: number, 
+            readonly name: string, 
+            readonly type: number, 
+            readonly telephone: string
+        }
     }
 }
