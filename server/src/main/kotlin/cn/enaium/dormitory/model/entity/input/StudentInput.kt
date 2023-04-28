@@ -37,7 +37,7 @@ data class StudentInput(
     val gender: Boolean?,
     val dormitoryId: Int?,
     val state: String?,
-    val createDate: LocalDateTime?,
+    var createDate: LocalDateTime?,
 ) : Input<Student> {
 
     override fun toEntity(): Student {

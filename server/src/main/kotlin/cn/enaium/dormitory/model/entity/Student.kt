@@ -38,6 +38,8 @@ interface Student {
 
     val gender: Boolean
 
+    val dormitoryId: Int
+
     @ManyToOne
     val dormitory: Dormitory
 

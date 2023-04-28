@@ -35,7 +35,7 @@ data class MigrateInput(
     val studentId: Int?,
     val dormitoryId: Int?,
     val reason: String?,
-    val createDate: LocalDateTime?,
+    var createDate: LocalDateTime?,
 ) : Input<Migrate> {
 
     override fun toEntity(): Migrate {

@@ -37,18 +37,14 @@ const DebounceSelect = memo(
 
     return (
       <Select
-        labelInValue
         filterOption={false}
         onSearch={debounceFetcher}
         notFoundContent={fetching ? <Spin size="small" /> : null}
         {...props}
-        options={options.map((item: any) => {
-          return {
-            key: item.id,
-            label: item.name,
-            value: item.id,
-          }
-        })}
+        options={options.map((item: any) => ({
+          label: item.name,
+          value: item.id,
+        }))}
       />
     )
   },

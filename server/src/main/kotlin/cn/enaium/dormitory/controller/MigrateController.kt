@@ -33,6 +33,7 @@ import org.babyfish.jimmer.sql.kt.fetcher.newFetcher
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDateTime
 
 /**
  * 迁出
@@ -61,6 +62,7 @@ class MigrateController(
 
     @PutMapping
     fun put(@RequestBody migrateInput: MigrateInput): ResponseBody<Nothing?> {
+        migrateInput.createDate = LocalDateTime.now()
         migrateRepository.save(migrateInput)
         return ResponseBody.Builder.success()
     }

@@ -70,7 +70,6 @@ class DormitoryController(
 
     @PutMapping
     fun put(@RequestBody dormitoryInput: DormitoryInput): ResponseBody<Nothing?> {
-
         dormitoryRepository.save(dormitoryInput)
         return ResponseBody.Builder.success()
     }

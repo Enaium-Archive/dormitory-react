@@ -38,6 +38,7 @@ const BuildingForm: React.FC<{
   })
 
   const onFinish = (values: BuildingDto["BuildingController/DEFAULT_FETCHER"]) => {
+    console.log(values);
     api.buildingController
       .put({
         body: {
@@ -61,17 +62,6 @@ const BuildingForm: React.FC<{
       <Form onFinish={onFinish} labelCol={labelCol} initialValues={{ ...building }}>
         <Form.Item name="name" label="名称" rules={[{ required: true, message: "请输入名称!" }]}>
           <Input placeholder={building?.name ?? "请输入名称"} />
-        </Form.Item>
-        <Form.Item name={["role", "id"]} label="角色" rules={[{ required: true, message: "请选择角色!" }]}>
-          <Select
-            className="w-100"
-            style={{ width: 120 }}
-            placeholder={building?.operator?.name ?? "请选择操作员"}
-            options={data?.metadata?.content.map((item: OperatorDto["OperatorController/DEFAULT_FETCHER"]) => ({
-              label: item.name,
-              value: item.id,
-            }))}
-          />
         </Form.Item>
         <Button className="w-100" type="primary" htmlType="submit">
           提交

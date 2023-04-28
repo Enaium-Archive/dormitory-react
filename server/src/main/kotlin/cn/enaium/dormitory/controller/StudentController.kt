@@ -33,6 +33,7 @@ import org.babyfish.jimmer.sql.kt.fetcher.newFetcher
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.web.bind.annotation.*
+import java.time.LocalDateTime
 
 /**
  * 学生
@@ -68,6 +69,7 @@ class StudentController(
 
     @PutMapping
     fun put(@RequestBody studentInput: StudentInput): ResponseBody<Nothing?> {
+        studentInput.createDate = LocalDateTime.now()
         studentRepository.save(studentInput)
         return ResponseBody.Builder.success()
     }

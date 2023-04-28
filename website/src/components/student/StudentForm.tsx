@@ -39,6 +39,7 @@ const StudentForm: React.FC<{
   labelCol?: ColProps
 }> = memo(({ student, onDone, labelCol }) => {
   const onFinish = (values: StudentDto["StudentController/DEFAULT_FETCHER"]) => {
+    console.log(values)
     api.studentController
       .put({
         body: {
