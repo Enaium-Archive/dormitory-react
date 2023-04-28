@@ -29,6 +29,7 @@ import OperatorManager from "@/pages/OperatorManager.tsx"
 import BuildingManager from "@/pages/BuildingManager.tsx"
 import MigrateManager from "@/pages/MigrateManager.tsx"
 import StudentManager from "@/pages/StudentManager.tsx"
+import DormitoryManager from "@/pages/DormitoryManager.tsx"
 
 const router = createBrowserRouter([
   {
@@ -58,6 +59,10 @@ const router = createBrowserRouter([
       {
         path: "building-manager",
         element: <BuildingManager />,
+      },
+      {
+        path: "dormitory-manager",
+        element: <DormitoryManager />,
       },
       {
         path: "migrate-manager",

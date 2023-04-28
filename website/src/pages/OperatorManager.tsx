@@ -55,8 +55,8 @@ const columns: ColumnsType<OperatorDto["OperatorController/DEFAULT_FETCHER"]> = 
     title: "性别",
     dataIndex: "gender",
     key: "gender",
-    render: (_, record?: OperatorDto["OperatorController/DEFAULT_FETCHER"]) => {
-      return <div>{record?.gender ? "男" : "女"}</div>
+    render: (gender?: boolean) => {
+      return <div>{gender ? "男" : "女"}</div>
     },
   },
   {

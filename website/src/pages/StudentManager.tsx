@@ -19,15 +19,137 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
+import { Button, message, Popconfirm, Table } from "antd"
+import { DormitoryDto, StudentDto } from "@/__generated/model/dto"
+import { useImmer } from "use-immer"
+import { RequestOf } from "@/__generated"
+import { api } from "@/common/ApiInstance.ts"
+import { useQuery } from "react-query"
+import React, { memo, useCallback } from "react"
+import { atom, useAtom, useSetAtom } from "jotai"
+import { ColumnsType } from "antd/es/table"
 
-import React from 'react';
+const studentAtom = atom<StudentDto["StudentController/DEFAULT_FETCHER"] | null>(null)
+
+const columns: ColumnsType<StudentDto["StudentController/DEFAULT_FETCHER"]> = [
+  {
+    title: "编号",
+    dataIndex: "id",
+    key: "id",
+  },
+  {
+    title: "学号",
+    dataIndex: "number",
+    key: "number",
+  },
+  {
+    title: "姓名",
+    dataIndex: "name",
+    key: "name",
+  },
+  {
+    title: "性别",
+    dataIndex: "gender",
+    key: "gender",
+    render: (gender?: boolean) => {
+      return <div>{gender ? "男" : "女"}</div>
+    },
+  },
+  {
+    title: "宿舍",
+    dataIndex: "dormitory",
+    key: "dormitory",
+    render: (dormitory?: DormitoryDto["DormitoryController/DEFAULT_FETCHER"]) => <div>{dormitory?.name}</div>,
+  },
+  {
+    title: "状态",
+    dataIndex: "state",
+    key: "state",
+  },
+  {
+    title: "时间",
+    dataIndex: "createDate",
+    key: "createDate",
+  },
+  {
+    title: "操作",
+    render: (_, record: StudentDto["StudentController/DEFAULT_FETCHER"]) => {
+      return <StudentAction student={record} />
+    },
+  },
+]
+
+const StudentAction: React.FC<{ student: StudentDto["StudentController/DEFAULT_FETCHER"] }> = memo(({ student }) => {
+  const setStudent = useSetAtom(studentAtom)
+  return (
+    <>
+      <Button.Group>
+        <Button size="small" type="primary" onClick={() => setStudent(student)}>
+          修改
+        </Button>
+        <Popconfirm
+          title="删除记录"
+          description="你确定要删除这条记录吗?"
+          onConfirm={() => {
+            api.studentController.delete({ id: student.id }).then((r) => {
+              if (r.code == 200) {
+                message.success("删除成功")
+              }
+            })
+          }}
+          onCancel={() => {
+            message.info("取消删除")
+          }}
+          okText="确认"
+          cancelText="取消"
+        >
+          <Button size="small" type="primary" danger>
+            删除
+          </Button>
+        </Popconfirm>
+      </Button.Group>
+    </>
+  )
+})
 
 const StudentManager = () => {
-    return (
-        <div>
-            
-        </div>
-    );
-};
+  const [options, setOptions] = useImmer<RequestOf<typeof api.studentController.get>>({})
 
-export default StudentManager;
+  const { data } = useQuery({
+    queryKey: ["StudentManager", options],
+    queryFn: () => api.studentController.get(options),
+  })
+
+  const page = data?.metadata?.number
+
+  const pagination = {
+    current: page ? page + 1 : undefined,
+    pageSize: data?.metadata?.size,
+    total: data?.metadata?.totalElements,
+    onChange: useCallback(
+      (page: number, pageSize: number) => {
+        setOptions((draft) => {
+          draft.page = page - 1
+          draft.size = pageSize
+        })
+      },
+      [setOptions],
+    ),
+  }
+
+  const [student, setStudnet] = useAtom(studentAtom)
+
+  return (
+    <>
+      <Table
+        columns={columns}
+        dataSource={data?.metadata?.content}
+        pagination={pagination}
+        rowKey={(record: StudentDto["StudentController/DEFAULT_FETCHER"]) => record.id}
+        bordered
+      />
+    </>
+  )
+}
+
+export default StudentManager
