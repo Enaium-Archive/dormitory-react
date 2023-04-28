@@ -20,35 +20,35 @@ export class DormitoryController {
         let _uri = '/dormitory/';
         let _separator = _uri.indexOf('?') === -1 ? '?' : '&';
         let _value: any = undefined;
-        _value = options.dormitoryInput.buildingId;
+        _value = options.dormitoryInput?.buildingId;
         if (_value !== undefined && _value !== null) {
             _uri += _separator
             _uri += 'buildingId='
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }
-        _value = options.dormitoryInput.id;
+        _value = options.dormitoryInput?.id;
         if (_value !== undefined && _value !== null) {
             _uri += _separator
             _uri += 'id='
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }
-        _value = options.dormitoryInput.name;
+        _value = options.dormitoryInput?.name;
         if (_value !== undefined && _value !== null) {
             _uri += _separator
             _uri += 'name='
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }
-        _value = options.dormitoryInput.telephone;
+        _value = options.dormitoryInput?.telephone;
         if (_value !== undefined && _value !== null) {
             _uri += _separator
             _uri += 'telephone='
             _uri += encodeURIComponent(_value);
             _separator = '&';
         }
-        _value = options.dormitoryInput.type;
+        _value = options.dormitoryInput?.type;
         if (_value !== undefined && _value !== null) {
             _uri += _separator
             _uri += 'type='
@@ -83,9 +83,9 @@ export class DormitoryController {
 export type DormitoryControllerOptions = {
     'delete': {readonly id: number},
     'get': {
-        readonly page: number, 
-        readonly size: number, 
-        readonly dormitoryInput: DormitoryInput
+        readonly page?: number,
+        readonly size?: number,
+        readonly dormitoryInput?: DormitoryInput
     },
     'put': {readonly body: DormitoryInput}
 }
