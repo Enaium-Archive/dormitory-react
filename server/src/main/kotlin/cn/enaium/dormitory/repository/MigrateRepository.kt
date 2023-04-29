@@ -23,14 +23,12 @@
 package cn.enaium.dormitory.repository
 
 import cn.enaium.dormitory.controller.MigrateController.Companion.DEFAULT_FETCHER
-import cn.enaium.dormitory.model.entity.Migrate
-import cn.enaium.dormitory.model.entity.dormitoryId
+import cn.enaium.dormitory.model.entity.*
 import cn.enaium.dormitory.model.entity.input.MigrateInput
-import cn.enaium.dormitory.model.entity.reason
-import cn.enaium.dormitory.model.entity.studentId
 import org.babyfish.jimmer.spring.repository.KRepository
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.ilike
+import org.babyfish.jimmer.sql.kt.ast.expression.lt
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -43,6 +41,7 @@ interface MigrateRepository : KRepository<Migrate, Int> {
                 migrateInput.studentId?.let { where(table.studentId eq it) }
                 migrateInput.dormitoryId?.let { where(table.dormitoryId eq it) }
                 migrateInput.reason?.takeIf { it.isNotEmpty() }?.let { where(table.reason ilike it) }
+                migrateInput.createDate?.let { where(table.createDate lt it) }
             }
             select(table.fetch(DEFAULT_FETCHER))
         })

@@ -33,6 +33,8 @@ interface Building {
 
     val name: String
 
+    val operatorId: Int
+
     @ManyToOne
     val operator: Operator
 

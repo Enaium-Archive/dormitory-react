@@ -24,14 +24,8 @@ import { Button, Form, Input, message } from "antd"
 import React, { memo } from "react"
 import DebounceSelect from "@/components/DebounceSelect.tsx"
 import { api } from "@/common/ApiInstance.ts"
-import { AbsentDto, BuildingDto, DormitoryDto, StudentDto } from "@/__generated/model/dto"
+import { DormitoryDto, MigrateDto, StudentDto } from "@/__generated/model/dto"
 import { ColProps } from "antd/es/grid/col"
-
-const fetchBuilding = async (
-  name: string,
-): Promise<ReadonlyArray<BuildingDto["BuildingController/DEFAULT_FETCHER"]>> => {
-  return (await api.buildingController.get({ buildingInput: { name: name } })).metadata?.content ?? []
-}
 
 const fetchDormitory = async (
   name: string,
@@ -43,17 +37,16 @@ const fetchStudent = async (name: string): Promise<ReadonlyArray<StudentDto["Stu
   return (await api.studentController.get({ studentInput: { name: name } })).metadata?.content ?? []
 }
 
-const AbsentForm: React.FC<{
-  absent?: AbsentDto["AbsentController/DEFAULT_FETCHER"] | null
+const MigrateForm: React.FC<{
+  migrate: MigrateDto["MigrateController/DEFAULT_FETCHER"] | null
   onDone?: () => void
   labelCol?: ColProps
-}> = memo(({ absent, onDone, labelCol }) => {
-  const onFinish = (values: AbsentDto["AbsentController/DEFAULT_FETCHER"]) => {
-    api.absentController
+}> = memo(({ migrate, onDone, labelCol }) => {
+  const onFinish = (values: MigrateDto["MigrateController/DEFAULT_FETCHER"]) => {
+    api.migrateController
       .put({
         body: {
-          id: absent?.id,
-          buildingId: values?.building?.id,
+          id: migrate?.id,
           dormitoryId: values?.dormitory?.id,
           studentId: values?.student?.id,
           reason: values?.reason,
@@ -71,26 +64,19 @@ const AbsentForm: React.FC<{
 
   return (
     <>
-      <Form onFinish={onFinish} labelCol={labelCol}>
-        <Form.Item name={["building", "id"]} label="宿舍楼" rules={[{ required: true, message: "请选宿舍楼!" }]}>
-          <DebounceSelect
-            showSearch
-            placeholder={absent?.building.name ?? "请选择宿舍楼"}
-            fetchOptions={fetchBuilding}
-          />
+      <Form onFinish={onFinish} labelCol={labelCol} initialValues={{ ...migrate }}>
+        <Form.Item name={["student", "id"]} label="学生" rules={[{ required: true, message: "请选择学生!" }]}>
+          <DebounceSelect showSearch placeholder={migrate?.student?.name ?? "请选择学生"} fetchOptions={fetchStudent} />
         </Form.Item>
         <Form.Item name={["dormitory", "id"]} label="宿舍" rules={[{ required: true, message: "请选择宿舍!" }]}>
           <DebounceSelect
             showSearch
-            placeholder={absent?.dormitory.name ?? "请选择宿舍"}
+            placeholder={migrate?.dormitory?.name ?? "请选择宿舍"}
             fetchOptions={fetchDormitory}
           />
         </Form.Item>
-        <Form.Item name={["student", "id"]} label="学生" rules={[{ required: true, message: "请选择学生!" }]}>
-          <DebounceSelect showSearch placeholder={absent?.student.name ?? "请选择学生"} fetchOptions={fetchStudent} />
-        </Form.Item>
         <Form.Item name="reason" label="原因" rules={[{ required: true, message: "请输入原因!" }]}>
-          <Input placeholder={absent?.reason ?? "请输入原因"} />
+          <Input placeholder={migrate?.reason ?? "请输入原因"} />
         </Form.Item>
         <Button className="w-100" type="primary" htmlType="submit">
           提交
@@ -100,4 +86,4 @@ const AbsentForm: React.FC<{
   )
 })
 
-export default AbsentForm
+export default MigrateForm

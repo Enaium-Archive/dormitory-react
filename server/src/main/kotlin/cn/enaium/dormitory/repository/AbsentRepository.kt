@@ -28,6 +28,7 @@ import cn.enaium.dormitory.model.entity.input.AbsentInput
 import org.babyfish.jimmer.spring.repository.KRepository
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.ilike
+import org.babyfish.jimmer.sql.kt.ast.expression.lt
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -42,6 +43,7 @@ interface AbsentRepository : KRepository<Absent, Int> {
                 absentInput.studentId?.let { where(table.studentId eq it) }
                 absentInput.operatorId?.let { where(table.operatorId eq it) }
                 absentInput.reason?.takeIf { it.isNotEmpty() }?.let { where(table.reason ilike it) }
+                absentInput.createDate?.let { where(table.createDate lt it) }
             }
             select(table.fetch(AbsentController.DEFAULT_FETCHER))
         })

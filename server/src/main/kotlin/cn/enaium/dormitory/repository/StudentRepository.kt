@@ -28,6 +28,7 @@ import cn.enaium.dormitory.model.entity.input.StudentInput
 import org.babyfish.jimmer.spring.repository.KRepository
 import org.babyfish.jimmer.sql.kt.ast.expression.eq
 import org.babyfish.jimmer.sql.kt.ast.expression.ilike
+import org.babyfish.jimmer.sql.kt.ast.expression.lt
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Repository
@@ -42,6 +43,7 @@ interface StudentRepository : KRepository<Student, Int> {
                 studentInput.gender?.let { where(table.gender eq it) }
                 studentInput.dormitoryId?.let { where(table.dormitory.id eq it) }
                 studentInput.state?.takeIf { it.isNotEmpty() }?.let { where(table.state ilike it) }
+                studentInput.createDate?.let { where(table.createDate lt it) }
             }
             select(table.fetch(DEFAULT_FETCHER))
         })

@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-import { Button, message, Popconfirm, Table } from "antd"
+import { Button, Card, message, Modal, Popconfirm, Table } from "antd"
 import { DormitoryDto, MigrateDto, StudentDto } from "@/__generated/model/dto"
 import { useImmer } from "use-immer"
 import { RequestOf } from "@/__generated"
@@ -29,6 +29,9 @@ import { useQuery } from "react-query"
 import React, { memo, useCallback } from "react"
 import { atom, useAtom, useSetAtom } from "jotai"
 import { ColumnsType } from "antd/es/table"
+import { PlusOutlined } from "@ant-design/icons"
+import MigrateForm from "@/components/migrate/MigrateForm.tsx"
+import MigrateSearchForm from "@/components/migrate/MigrateSearchForm.tsx"
 
 const migrateAtom = atom<MigrateDto["MigrateController/DEFAULT_FETCHER"] | null>(null)
 
@@ -126,17 +129,56 @@ const MigrateManager = () => {
     ),
   }
 
+  const onSearch = useCallback(
+    (values: MigrateDto["MigrateController/DEFAULT_FETCHER"]) => {
+      setOptions((draft) => {
+        draft.migrateInput = {
+          studentId: values?.student?.id,
+          dormitoryId: values?.dormitory?.id,
+          createDate: values?.createDate ? new Date(values.createDate).toISOString() : undefined,
+        }
+      })
+    },
+    [setOptions],
+  )
+
   const [migrate, setMigrate] = useAtom(migrateAtom)
 
   return (
     <>
-      <Table
-        columns={columns}
-        dataSource={data?.metadata?.content}
-        pagination={pagination}
-        rowKey={(record: MigrateDto["MigrateController/DEFAULT_FETCHER"]) => record.id}
-        bordered
-      />
+      <Card title="搜索">
+        <MigrateSearchForm onFinish={onSearch} />
+      </Card>
+      <Card
+        title={
+          <div className="d-flex justify-content-between">
+            <div>迁出</div>
+            <Button
+              className="d-flex align-items-center"
+              icon={<PlusOutlined />}
+              type="primary"
+              onClick={() => {
+                setMigrate({} as never)
+              }}
+            >
+              添加
+            </Button>
+          </div>
+        }
+      >
+        <Table
+          columns={columns}
+          dataSource={data?.metadata?.content}
+          pagination={pagination}
+          rowKey={(record: MigrateDto["MigrateController/DEFAULT_FETCHER"]) => record.id}
+          bordered
+        />
+      </Card>
+      <Modal open={migrate != null} width={600} footer={<></>} onCancel={() => setMigrate(null)}>
+        <div className="m-3">
+          <MigrateForm labelCol={{ span: 3 }} migrate={migrate} />
+        </div>
+      </Modal>
     </>
   )
 }
