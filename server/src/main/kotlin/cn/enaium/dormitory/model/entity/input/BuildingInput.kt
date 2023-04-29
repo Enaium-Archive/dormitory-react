@@ -32,7 +32,7 @@ import org.mapstruct.factory.Mappers
 data class BuildingInput(
     val id: Int?,
     val name: String?,
-    val operatorId: Int?,
+    var operatorId: Int?,
 ) : Input<Building> {
 
     override fun toEntity(): Building {

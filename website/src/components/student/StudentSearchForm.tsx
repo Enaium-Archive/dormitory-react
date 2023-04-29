@@ -20,56 +20,55 @@
  * SOFTWARE.
  */
 
-import { Button, Col, Form, FormProps, Input, Radio, Row, Select } from "antd"
-import { useQuery } from "react-query"
+import { Button, Col, DatePicker, Form, FormProps, Input, Radio, Row } from "antd"
 import { api } from "@/common/ApiInstance.ts"
 import { SearchOutlined } from "@ant-design/icons"
 import { memo } from "react"
-import { BuildingDto } from "@/__generated/model/dto"
+import { DormitoryDto } from "@/__generated/model/dto"
+import DebounceSelect from "@/components/DebounceSelect.tsx"
 
-const DormitorySearchForm = memo(({ ...props }: FormProps) => {
-  const { data } = useQuery({
-    queryKey: ["DormitorySearchForm"],
-    queryFn: () => api.buildingController.get({}),
-  })
+const fetchDormitory = async (
+  name: string,
+): Promise<ReadonlyArray<DormitoryDto["DormitoryController/DEFAULT_FETCHER"]>> => {
+  return (await api.dormitoryController.get({ dormitoryInput: { name: name } })).metadata?.content ?? []
+}
 
+const StudentSearchForm = memo(({ ...props }: FormProps) => {
   return (
     <>
       <Form {...props}>
         <Row gutter={16}>
-          <Col span={5}>
-            <Form.Item name={["building", "id"]} label="宿舍楼">
-              <Select
-                className="w-100"
-                style={{ width: 120 }}
-                placeholder="请选择宿舍楼"
-                options={data?.metadata?.content.map((item: BuildingDto["BuildingController/DEFAULT_FETCHER"]) => ({
-                  label: item.name,
-                  value: item.id,
-                }))}
-                allowClear
-              />
+          <Col span={4}>
+            <Form.Item name="number" label="学号">
+              <Input placeholder={"请输入学号"} allowClear />
             </Form.Item>
           </Col>
-          <Col span={5}>
-            <Form.Item name="name" label="名称">
-              <Input placeholder="请输入名称" allowClear />
-            </Form.Item>
-          </Col>
-          <Col span={5}>
-            <Form.Item name="type" label="类型">
+          <Col span={3}>
+            <Form.Item name="gender" label="性别">
               <Radio.Group className="d-flex justify-content-between">
-                <Radio value={4}>4</Radio>
-                <Radio value={5}>5</Radio>
-                <Radio value={6}>6</Radio>
-                <Radio value={7}>7</Radio>
-                <Radio value={8}>8</Radio>
+                <Radio value={false}>女</Radio>
+                <Radio value={true}>男</Radio>
               </Radio.Group>
             </Form.Item>
           </Col>
-          <Col span={5}>
-            <Form.Item name="telephone" label="电话">
-              <Input placeholder="请输入电话" allowClear />
+          <Col span={3}>
+            <Form.Item name="name" label="姓名">
+              <Input placeholder="请输入姓名" allowClear />
+            </Form.Item>
+          </Col>
+          <Col span={3}>
+            <Form.Item name={["dormitory", "id"]} label="宿舍名称">
+              <DebounceSelect showSearch placeholder="请选择宿舍" fetchOptions={fetchDormitory} allowClear />
+            </Form.Item>
+          </Col>
+          <Col span={3}>
+            <Form.Item name="state" label="状态">
+              <Input placeholder={"请输入状态"} allowClear />
+            </Form.Item>
+          </Col>
+          <Col span={4}>
+            <Form.Item name="crateDate" label="日期">
+              <DatePicker placeholder="请选择日期" allowClear />
             </Form.Item>
           </Col>
           <Col span={4}>
@@ -88,4 +87,4 @@ const DormitorySearchForm = memo(({ ...props }: FormProps) => {
   )
 })
 
-export default DormitorySearchForm
+export default StudentSearchForm

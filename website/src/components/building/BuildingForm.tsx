@@ -20,11 +20,10 @@
  * SOFTWARE.
  */
 
-import { Button, Form, Input, message, Select } from "antd"
+import { Button, Form, Input, message } from "antd"
 import React, { memo } from "react"
-import { BuildingDto, OperatorDto } from "@/__generated/model/dto"
+import { BuildingDto } from "@/__generated/model/dto"
 import { ColProps } from "antd/es/grid/col"
-import { useQuery } from "react-query"
 import { api } from "@/common/ApiInstance.ts"
 
 const BuildingForm: React.FC<{
@@ -32,11 +31,6 @@ const BuildingForm: React.FC<{
   onDone?: () => void
   labelCol?: ColProps
 }> = memo(({ building, onDone, labelCol }) => {
-  const { data } = useQuery({
-    queryKey: ["BuildingForm"],
-    queryFn: () => api.operatorController.get({}),
-  })
-
   const onFinish = (values: BuildingDto["BuildingController/DEFAULT_FETCHER"]) => {
     console.log(values);
     api.buildingController

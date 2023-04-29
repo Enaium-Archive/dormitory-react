@@ -24,6 +24,7 @@ package cn.enaium.dormitory.controller
 
 import cn.dev33.satoken.annotation.SaCheckRole
 import cn.dev33.satoken.annotation.SaMode
+import cn.dev33.satoken.stp.StpUtil
 import cn.enaium.dormitory.model.entity.Building
 import cn.enaium.dormitory.model.entity.by
 import cn.enaium.dormitory.model.entity.input.BuildingInput
@@ -70,6 +71,7 @@ class BuildingController(
 
     @PutMapping
     fun put(@RequestBody buildingInput: BuildingInput): ResponseBody<Nothing?> {
+        buildingInput.operatorId = StpUtil.getLoginIdAsInt()
         buildingRepository.save(buildingInput)
         return ResponseBody.Builder.success()
     }

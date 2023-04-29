@@ -30,6 +30,7 @@ import { atom, useAtom, useSetAtom } from "jotai"
 import { ColumnsType } from "antd/es/table"
 import StudentForm from "@/components/student/StudentForm.tsx"
 import { PlusOutlined } from "@ant-design/icons"
+import StudentSearchForm from "@/components/student/StudentSearchForm.tsx"
 
 const studentAtom = atom<StudentDto["StudentController/DEFAULT_FETCHER"] | null>(null)
 
@@ -139,11 +140,29 @@ const StudentManager = () => {
     ),
   }
 
+  const onSearch = useCallback(
+    (values: StudentDto["StudentController/DEFAULT_FETCHER"]) => {
+      setOptions((draft) => {
+        draft.studentInput = {
+          number: values?.number,
+          name: values?.name,
+          gender: values?.gender,
+          dormitoryId: values?.dormitory?.id,
+          state: values?.state,
+          createDate: values?.createDate ? new Date(values.createDate).toISOString() : undefined,
+        }
+      })
+    },
+    [setOptions],
+  )
+
   const [student, setStudent] = useAtom(studentAtom)
 
   return (
     <>
-      <Card title="搜索"></Card>
+      <Card title="搜索">
+        <StudentSearchForm onFinish={onSearch} />
+      </Card>
       <Card
         title={
           <div className="d-flex justify-content-between">
